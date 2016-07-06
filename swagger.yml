@@ -4,8 +4,15 @@ info:
   version: "0.0.1"
   title: SMP Native REST API
 
+host: 10.98.192.9
+basePath: /api/native
+consumes:
+  - application/json
+produces:
+  - application/json
+
 paths:
-  /api/native/galleries/feed:
+  /galleries/feed:
     get:
       description: |
         Gets `Gallery` objects.
@@ -13,7 +20,7 @@ paths:
         -
           name: Authorization
           in: header
-          description: Bearer <token>
+          description: Authorization token
           required: false
           type: string
         -
@@ -25,7 +32,7 @@ paths:
         -
           name: last
           in: query
-          description: Query newer `Gallery` objects with an id greater than
+          description: Query `Gallery` objects with an id older than parameter
           required: false
           type: integer
       responses:
