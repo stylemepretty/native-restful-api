@@ -1,0 +1,81 @@
+swagger: '2.0'
+
+info:
+  version: "0.0.1"
+  title: SMP Native REST API
+
+paths:
+  /api/native/galleries/feed:
+    get:
+      description: |
+        Gets `Gallery` objects.
+      parameters:
+        -
+          name: perPage
+          in: query
+          description: Maximum number of `Gallery` objects
+          required: false
+          type: integer
+        -
+          name: last
+          in: query
+          description: Query newer `Gallery` objects with an id greater than
+          required: false
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Galleries'
+
+definitions:
+  Galleries:
+    type: object
+    properties:
+      total:
+        type: integer
+        description: Total `Gallery` objects matching query
+      last:
+        type: integer
+        description: The `Gallery` object ID matching request parameter or null
+      perPage:
+        type: integer
+        description: Integer matching perPage request parameter or default value
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Gallery'
+
+  Gallery:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+        description: Description of product.
+      thumb:
+        type: string
+        description: Main image.
+      post_url:
+        type: string
+        description: Url of associated post.
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Image'
+
+  Image:
+    type: object
+    properties:
+      id:
+        type: integer
+      path:
+        type: string
+        description: Path to image source.
+      width:
+        type: integer
+        description: Width of image.
+      height:
+        type: integer
+        description: Height of image.
