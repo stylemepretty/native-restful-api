@@ -11,6 +11,12 @@ paths:
         Gets `Gallery` objects.
       parameters:
         -
+          name: Authorization
+          in: header
+          description: Bearer <token>
+          required: false
+          type: string
+        -
           name: perPage
           in: query
           description: Maximum number of `Gallery` objects
