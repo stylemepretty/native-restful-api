@@ -3,17 +3,28 @@ swagger: '2.0'
 info:
   version: "0.0.1"
   title: SMP Native REST API
+  contact:
+      email: "adam@stylemepretty.com"
 
 host: 10.98.192.9
 produces:
   - application/json
 
+tags:
+    -
+      name: gallery
+      description: Api routes involving a single gallery or collection of galleries
+    -
+      name: user
+      description: Api routes involving user actions
+
 paths:
   /api/native/galleries/feed:
     get:
+      tags:
+          - gallery
       summary: Get feed galleries
       operationId: getFeedGalleries
-      description: Gets `Gallery` objects.
       consumes:
         - application/json
       parameters:
@@ -42,9 +53,15 @@ paths:
              $ref: '#/definitions/Galleries'
   /wp-json/jwt-auth/v1/token:
     post:
-      summary: Request access token
+      tags:
+          - user
+      summary: Submit user credntials and request access token
       operationId: getToken
-      description: Request access token.
+      schemes:
+        - http
+        - https
+      consumes:
+        - application/x-www-form-urlencoded
       parameters:
         -
           name: username
