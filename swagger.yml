@@ -55,7 +55,7 @@ paths:
     post:
       tags:
           - user
-      summary: Submit user credntials and request access token
+      summary: Request access token
       operationId: getToken
       schemes:
         - http
@@ -66,7 +66,6 @@ paths:
         -
           name: username
           in: formData
-          description: Authorization token
           required: true
           type: string
         -
@@ -90,7 +89,7 @@ paths:
               user_display_name:
                 type: string
         403:
-          description: Failed login response
+          description: Failed authentication
           schema:
              $ref: '#/definitions/Error'
   /wp-json/jwt-auth/v1/token/validate:
@@ -119,7 +118,7 @@ paths:
                 type: string
                 description: If valid code will be set to jwt_auth_valid_token
         403:
-          description: Failed login response
+          description: Invalid token
           schema:
              $ref: '#/definitions/Error'
 
@@ -136,7 +135,6 @@ paths:
         -
           name: username
           in: formData
-          description: Authorization token
           required: true
           type: string
         -
@@ -155,7 +153,7 @@ paths:
           schema:
              $ref: '#/definitions/User'
         403:
-          description: Failed login response
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
 
