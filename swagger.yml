@@ -5,17 +5,17 @@ info:
   title: SMP Native REST API
 
 host: 10.98.192.9
-basePath: /api/native
-consumes:
-  - application/json
 produces:
   - application/json
 
 paths:
-  /galleries/feed:
+  /api/native/galleries/feed:
     get:
-      description: |
-        Gets `Gallery` objects.
+      summary: Get feed galleries
+      operationId: getFeedGalleries
+      description: Gets `Gallery` objects.
+      consumes:
+        - application/json
       parameters:
         -
           name: Authorization
@@ -40,8 +40,52 @@ paths:
           description: Successful response
           schema:
              $ref: '#/definitions/Galleries'
+  /wp-json/jwt-auth/v1/token:
+    post:
+      summary: Request access token
+      operationId: getToken
+      description: Request access token.
+      parameters:
+        -
+          name: username
+          in: formData
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: password
+          in: formData
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             type: object
+             properties:
+              token:
+                type: string
+                description: Authorization token
+              user_email:
+                type: string
+              user_nicename:
+                type: string
+              user_display_name:
+                type: string
+        403:
+          description: Failed login response
+          schema:
+             $ref: '#/definitions/Error'
 
 definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+
   Galleries:
     type: object
     properties:
