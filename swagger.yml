@@ -72,7 +72,42 @@ paths:
         -
           name: password
           in: formData
-          required: false
+          required: TRUE
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             type: object
+             properties:
+              token:
+                type: string
+                description: Authorization token
+              user_email:
+                type: string
+              user_nicename:
+                type: string
+              user_display_name:
+                type: string
+        403:
+          description: Failed login response
+          schema:
+             $ref: '#/definitions/Error'
+  /wp-json/jwt-auth/v1/token/validate:
+    post:
+      tags:
+          - user
+      summary: Validates a access token
+      operationId: validateToken
+      schemes:
+        - http
+        - https
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
           type: string
       responses:
         200:
