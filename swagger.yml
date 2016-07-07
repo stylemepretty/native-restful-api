@@ -72,7 +72,7 @@ paths:
         -
           name: password
           in: formData
-          required: TRUE
+          required: true
           type: string
       responses:
         200:
@@ -123,6 +123,42 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
+  /wp-json/wp/v2/users:
+    post:
+      tags:
+          - user
+      summary: Create a new user
+      operationId: createUser
+      schemes:
+        - http
+        - https
+      parameters:
+        -
+          name: username
+          in: formData
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: email
+          in: formData
+          required: true
+          type: string
+        -
+          name: password
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/User'
+        403:
+          description: Failed login response
+          schema:
+             $ref: '#/definitions/Error'
+
 definitions:
   Error:
     type: object
@@ -130,6 +166,16 @@ definitions:
       code:
         type: string
       message:
+        type: string
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+      email:
         type: string
 
   Galleries:
