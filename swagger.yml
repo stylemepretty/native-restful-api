@@ -115,15 +115,9 @@ paths:
           schema:
              type: object
              properties:
-              token:
+              code:
                 type: string
-                description: Authorization token
-              user_email:
-                type: string
-              user_nicename:
-                type: string
-              user_display_name:
-                type: string
+                description: If valid code will be set to jwt_auth_valid_token
         403:
           description: Failed login response
           schema:
