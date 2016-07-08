@@ -48,13 +48,13 @@ paths:
           in: query
           description: Query `GalleryPreview` objects matching a `Vendor` id
           required: false
-          type: int
+          type: integer
         -
           name: detail
           in: query
           description: Query `GalleryPreview` objects matching a `Detail` id
           required: false
-          type: int
+          type: integer
       responses:
         200:
           description: Successful response
@@ -324,7 +324,7 @@ paths:
     post:
       tags:
           - user
-      summary: Get info about the user 
+      summary: Get info about the user
       parameters:
         -
           name: Authorization
@@ -346,7 +346,7 @@ paths:
     post:
       tags:
           - user
-      summary: Get a users favorite images. 
+      summary: Get a users favorite images.
       parameters:
         -
           name: Authorization
@@ -368,7 +368,7 @@ paths:
     get:
       tags:
           - user
-      summary: Search users favorite images. 
+      summary: Search users favorite images.
       parameters:
         -
           name: Authorization
@@ -566,7 +566,7 @@ definitions:
         type: string
         description: human readable tag name
 
-# should Detail ids be unique across all taxonomies (just use the term_taxonomy_id from wordpress). 
+# should Detail ids be unique across all taxonomies (just use the term_taxonomy_id from wordpress).
   Detail:
     type: object
     description: gallery level "tags".
