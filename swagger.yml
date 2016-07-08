@@ -15,25 +15,22 @@ tags:
       name: gallery
       description: Api routes involving a single gallery or collection of galleries
     -
+      name: image
+      description: Api routes involving a single image or collection of images
+    -
       name: user
       description: Api routes involving user actions
 
 paths:
-  /api/galleries:
+  /api/v2/galleries:
     get:
       tags:
           - gallery
-      summary: Get galleries
+      summary: Get `Preview` objects matching queried `Vendor` and `Detail` parameters
       operationId: getFeedGalleries
       consumes:
         - application/json
       parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: false
-          type: string
         -
           name: perPage
           in: query
@@ -41,23 +38,21 @@ paths:
           required: false
           type: integer
         -
-# Adam, how do we feel about this?  Should it be just an offset? 
           name: last
           in: query
           description: Query `GalleryPreview` objects with an id older than parameter
           required: false
           type: integer
         -
-          name: taxonomy
+          name: vendor
           in: query
-          description: taxonomy of "Detail" or "vendor" for a vendor
+          description: Query `GalleryPreview` objects matching a `Vendor` id
           required: false
           type: string
         -
-# This likely needs a better name
-          name: tid
+          name: detail
           in: query
-          description: term id of detail or vendor to follow
+          description: Query `GalleryPreview` objects matching a `Detail` id
           required: false
           type: string
       responses:
@@ -65,6 +60,188 @@ paths:
           description: Successful response
           schema:
              $ref: '#/definitions/Galleries'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/gallery:
+    get:
+      tags:
+        - gallery
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Gallery'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/image:
+    get:
+      tags:
+        - image
+      summary: Get `Image` metdata
+      operationId: getImageMetadata
+      consumes:
+        - application/json
+      parameters:
+        -
+          name: id
+          in: query
+          description: Id of `Image` object to query
+          required: true
+          type: integer
+
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Image'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/following:
+    post:
+      tags:
+        - user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+      summary: Returns all `Object` objects the current user is following
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Following'
+        403:
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/follow:
+    post:
+      tags:
+        - user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: type of object to follow, can be "detail" or "vendor"
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: Id of `Detail` object or `Vendor` object
+          required: true
+          type: integer
+      summary: Allow users to follow a `Object` which can be either a detail or vendor
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Following'
+        403:
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/unfollow:
+    post:
+      tags:
+        - user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: type of object to unfollowing, can be "detail" or "vendor"
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: Id of `Detail` object or `Vendor` object
+          required: true
+          type: integer
+      summary: Unfollow a `Object`
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Following'
+        403:
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /wp-json/wp/v2/users:
+    post:
+      tags:
+          - user
+      summary: Create a new user
+      operationId: createUser
+      schemes:
+        - http
+        - https
+      parameters:
+        -
+          name: username
+          in: formData
+          required: true
+          type: string
+        -
+          name: email
+          in: formData
+          required: true
+          type: string
+        -
+          name: password
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/User'
+        403:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
   /wp-json/jwt-auth/v1/token:
     post:
       tags:
@@ -106,6 +283,7 @@ paths:
           description: Failed authentication
           schema:
              $ref: '#/definitions/Error'
+
   /wp-json/jwt-auth/v1/token/validate:
     post:
       tags:
@@ -135,143 +313,16 @@ paths:
           description: Invalid token
           schema:
              $ref: '#/definitions/Error'
-  /wp-json/wp/v2/users:
-    post:
-      tags:
-          - user
-      summary: Create a new user
-      operationId: createUser
-      schemes:
-        - http
-        - https
-      parameters:
-        -
-          name: username
-          in: formData
-          required: true
-          type: string
-        -
-          name: email
-          in: formData
-          required: true
-          type: string
-        -
-          name: password
-          in: formData
-          required: true
-          type: string
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/User'
-        403:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-             
-  /api/gallery:
-    get:
-      tags:
-        - gallery
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Gallery'
-      
-  /api/image:
-    get:
-      tags:
-        - image
-      summary: Get image metdata
-      operationId: getImageMetadata
-      consumes:
-        - application/json
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: false
-          type: string
-        -
-          name: id
-          in: query
-          description: the image id
-          required: true
-          type: integer
 
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Image'
-  /api/follow:
-    post:
-      tags:
-        - user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-        -
-          name: taxonomy
-          in: query
-          description: taxonomy of "Detail" or "vendor" for a vendor
-          required: true
-          type: string
-        -
-          name: id
-          in: query
-          description: id of "Detail" or "vendor"
-          required: true
-          type: integer
-      summary: Allow users to follow a Detail or Vendor
-      responses:
-        200:
-          description: User successfully follows vendor
-  
-  /api/unfollow:
-    post:
-      tags:
-        - user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-        -
-          name: taxonomy
-          in: query
-          description: taxonomy of "Detail" or "vendor" for a vendor
-          required: true
-          type: string
-        -
-          name: id
-          in: query
-          description: id of "Detail" or "vendor"
-          required: true
-          type: integer
-      summary: Allow users to follow a Detail or Vendor
-      responses:
-        200:
-          description: User successfully unfollows vendor
-    
  #/api/following - get things a user is following
  #/api/user
  #/api/user/favorites
- #/api/user/favorites/search - likely have to handle this internally (can't sent to algolia) 
+ #/api/user/favorites/search - likely have to handle this internally (can't sent to algolia)
 #/api/recommendFollows  - this should take a user id so we can personalize
 #/api/search/popular
 #/api/search/recent - per user basis?
 #for doing searches do we send to algolia directly
-          
+
 definitions:
   Error:
     type: object
@@ -290,8 +341,21 @@ definitions:
         type: string
       email:
         type: string
-  
-  #use allOf for composition if possible.     
+
+  Following:
+    type: array
+    items:
+      $ref: '#/definitions/Object'
+
+  Object:
+    type: object
+    properties:
+      id:
+        type: integer
+      taxonomy:
+        type: string
+
+  #use allOf for composition if possible.
   Image:
     type: object
     properties:
@@ -332,9 +396,9 @@ definitions:
         items:
           $ref: '#/definitions/GalleryPreview'
 
-#Trying to use composition with allOf this seemed to break stuff.  
+#Trying to use composition with allOf this seemed to break stuff.
   Gallery:
-    description: full gallery object 
+    description: full gallery object
     type: object
     properties:
       id:
@@ -347,7 +411,7 @@ definitions:
         description: Main image.
       thumbs:
         type: array
-        items: 
+        items:
           type: string
           description: URL of thumbs
       post_url:
@@ -360,7 +424,7 @@ definitions:
       vendors:
         type: array
         items:
-          $ref: '#/definitions/Vendor' 
+          $ref: '#/definitions/Vendor'
       images:
         type: array
         items:
@@ -379,11 +443,11 @@ definitions:
         description: Main image.
       thumbs:
         type: array
-        items: 
+        items:
           type: string
           description: URL of thumbs
-  #Note: add recomended here? 
-    
+  #Note: add recomended here?
+
   ImagePreview:
     type: object
     properties:
@@ -408,9 +472,8 @@ definitions:
       name:
         type: string
         description: human readable tag name
-  
-#Detail and Vendor are loosely abstracted to "terms".  Can to followable?  
-      
+
+#Detail and Vendor are loosely abstracted to "terms".  Can to followable?
   Detail:
     type: object
     description: gallery level "tags".
@@ -423,11 +486,11 @@ definitions:
       taxonomy:
         type: string
         description: slug used to find galleries
-        
+
   Vendor:
     type: object
     properties:
-      id: 
+      id:
         type: integer
       name:
         type: string
