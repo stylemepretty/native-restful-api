@@ -19,11 +19,11 @@ tags:
       description: Api routes involving user actions
 
 paths:
-  /api/native/galleries/feed:
+  /api/galleries:
     get:
       tags:
           - gallery
-      summary: Get feed galleries
+      summary: Get galleries
       operationId: getFeedGalleries
       consumes:
         - application/json
@@ -37,15 +37,29 @@ paths:
         -
           name: perPage
           in: query
-          description: Maximum number of `Gallery` objects
+          description: Maximum number of `GalleryPreview` objects
           required: false
           type: integer
         -
+# Adam, how do we feel about this?  Should it be just an offset? 
           name: last
           in: query
-          description: Query `Gallery` objects with an id older than parameter
+          description: Query `GalleryPreview` objects with an id older than parameter
           required: false
           type: integer
+        -
+          name: taxonomy
+          in: query
+          description: taxonomy of "Detail" or "vendor" for a vendor
+          required: false
+          type: string
+        -
+# This likely needs a better name
+          name: tid
+          in: query
+          description: term id of detail or vendor to follow
+          required: false
+          type: string
       responses:
         200:
           description: Successful response
@@ -121,7 +135,6 @@ paths:
           description: Invalid token
           schema:
              $ref: '#/definitions/Error'
-
   /wp-json/wp/v2/users:
     post:
       tags:
@@ -156,7 +169,109 @@ paths:
           description: Failed response
           schema:
              $ref: '#/definitions/Error'
+             
+  /api/gallery:
+    get:
+      tags:
+        - gallery
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Gallery'
+      
+  /api/image:
+    get:
+      tags:
+        - image
+      summary: Get image metdata
+      operationId: getImageMetadata
+      consumes:
+        - application/json
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+        -
+          name: id
+          in: query
+          description: the image id
+          required: true
+          type: integer
 
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Image'
+  /api/follow:
+    post:
+      tags:
+        - user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: taxonomy of "Detail" or "vendor" for a vendor
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: id of "Detail" or "vendor"
+          required: true
+          type: integer
+      summary: Allow users to follow a Detail or Vendor
+      responses:
+        200:
+          description: User successfully follows vendor
+  
+  /api/unfollow:
+    post:
+      tags:
+        - user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: taxonomy of "Detail" or "vendor" for a vendor
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: id of "Detail" or "vendor"
+          required: true
+          type: integer
+      summary: Allow users to follow a Detail or Vendor
+      responses:
+        200:
+          description: User successfully unfollows vendor
+    
+ #/api/following - get things a user is following
+ #/api/user
+ #/api/user/favorites
+ #/api/user/favorites/search - likely have to handle this internally (can't sent to algolia) 
+#/api/recommendFollows  - this should take a user id so we can personalize
+#/api/search/popular
+#/api/search/recent - per user basis?
+#for doing searches do we send to algolia directly
+          
 definitions:
   Error:
     type: object
@@ -175,6 +290,30 @@ definitions:
         type: string
       email:
         type: string
+  
+  #use allOf for composition if possible.     
+  Image:
+    type: object
+    properties:
+      id:
+        type: integer
+      path:
+        type: string
+        description: Path to image source.
+      width:
+        type: integer
+        description: Width of image.
+      height:
+        type: integer
+        description: Height of image.
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/Tag'
+      vendors:
+        type: array
+        items:
+          $ref: '#/definitions/Vendor'
 
   Galleries:
     type: object
@@ -191,28 +330,61 @@ definitions:
       results:
         type: array
         items:
-          $ref: '#/definitions/Gallery'
+          $ref: '#/definitions/GalleryPreview'
 
+#Trying to use composition with allOf this seemed to break stuff.  
   Gallery:
+    description: full gallery object 
     type: object
     properties:
       id:
         type: integer
       title:
         type: string
-        description: Description of product.
-      thumb:
+        description: title of gallery
+      background:
         type: string
         description: Main image.
+      thumbs:
+        type: array
+        items: 
+          type: string
+          description: URL of thumbs
       post_url:
         type: string
-        description: Url of associated post.
+        description: URL of associated post.
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/Detail'
+      vendors:
+        type: array
+        items:
+          $ref: '#/definitions/Vendor' 
       images:
         type: array
         items:
-          $ref: '#/definitions/Image'
+          $ref: '#/definitions/ImagePreview'
 
-  Image:
+  GalleryPreview:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+        description: title of gallery
+      background:
+        type: string
+        description: Main image.
+      thumbs:
+        type: array
+        items: 
+          type: string
+          description: URL of thumbs
+  #Note: add recomended here? 
+    
+  ImagePreview:
     type: object
     properties:
       id:
@@ -226,3 +398,38 @@ definitions:
       height:
         type: integer
         description: Height of image.
+
+  Tag:
+    type: object
+    description: image level tag
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+        description: human readable tag name
+  
+#Detail and Vendor are loosely abstracted to "terms".  Can to followable?  
+      
+  Detail:
+    type: object
+    description: gallery level "tags".
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+        description: name of detail
+      taxonomy:
+        type: string
+        description: slug used to find galleries
+        
+  Vendor:
+    type: object
+    properties:
+      id: 
+        type: integer
+      name:
+        type: string
+        description: Name of vendor
+        
