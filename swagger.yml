@@ -377,7 +377,7 @@ paths:
           required: true
           type: string
         -
-          name: kw
+          name: q
           in: query
           description: Keyword entered by user for search
           required: true
@@ -414,9 +414,34 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-#/api/search/popular
-#/api/search/recent - per user basis?
-#for doing searches do we send to algolia directly
+  /api/v2/search/popular:
+    get:
+      tags:
+          - user
+      summary: Get an ordered list of follows to recommend to the user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: q
+          in: query
+          description: Search query entered by user
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Object'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
 
 definitions:
   Error:
