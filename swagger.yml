@@ -500,40 +500,6 @@ definitions:
         items:
           $ref: '#/definitions/GalleryPreview'
 
-#Trying to use composition with allOf this seemed to break stuff.
-  Gallery:
-    description: full gallery object
-    type: object
-    properties:
-      id:
-        type: integer
-      title:
-        type: string
-        description: title of gallery
-      background:
-        type: string
-        description: Main image.
-      thumbs:
-        type: array
-        items:
-          type: string
-          description: URL of thumbs
-      post_url:
-        type: string
-        description: URL of associated post.
-      details:
-        type: array
-        items:
-          $ref: '#/definitions/Detail'
-      vendors:
-        type: array
-        items:
-          $ref: '#/definitions/Vendor'
-      images:
-        type: array
-        items:
-          $ref: '#/definitions/ImagePreview'
-
   GalleryPreview:
     type: object
     properties:
@@ -550,7 +516,30 @@ definitions:
         items:
           type: string
           description: URL of thumbs
-  #Note: add recomended here?
+
+
+#Trying to use composition with allOf this seemed to break stuff.
+  Gallery:
+    description: full gallery object
+    allOf:
+    - $ref: '#/definitions/GalleryPreview'
+    - type: object
+      properties:
+        post_url:
+          type: string
+          description: URL of associated post.
+        details:
+          type: array
+          items:
+            $ref: '#/definitions/Detail'
+        vendors:
+          type: array
+          items:
+            $ref: '#/definitions/Vendor'
+        images:
+          type: array
+          items:
+            $ref: '#/definitions/ImagePreview'
 
   ImagePreview:
     type: object
