@@ -48,13 +48,13 @@ paths:
           in: query
           description: Query `GalleryPreview` objects matching a `Vendor` id
           required: false
-          type: string
+          type: int
         -
           name: detail
           in: query
           description: Query `GalleryPreview` objects matching a `Detail` id
           required: false
-          type: string
+          type: int
       responses:
         200:
           description: Successful response
@@ -112,7 +112,7 @@ paths:
              $ref: '#/definitions/Error'
 
   /api/v2/following:
-    post:
+    get:
       tags:
         - user
       parameters:
@@ -320,11 +320,100 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
- #/api/following - get things a user is following
- #/api/user
- #/api/user/favorites
- #/api/user/favorites/search - likely have to handle this internally (can't sent to algolia)
-#/api/recommendFollows  - this should take a user id so we can personalize
+  /api/v2/user:
+    post:
+      tags:
+          - user
+      summary: Get info about the user 
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/User'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/user/favorites:
+    post:
+      tags:
+          - user
+      summary: Get a users favorite images. 
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Images'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/user/favorites/search:
+    post:
+      tags:
+          - user
+      summary: Search users favorite images. 
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: kw
+          in: query
+          description: Keyword entered by user for search
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Images'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/recommendFollows:
+    post:
+      tags:
+          - user
+      summary: Get an ordered list of follows to recommend to the user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Object'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
 #/api/search/popular
 #/api/search/recent - per user basis?
 #for doing searches do we send to algolia directly
@@ -353,9 +442,13 @@ definitions:
     items:
       $ref: '#/definitions/Object'
 
+#TODO: rename to Followable
   Object:
     type: object
     properties:
+      name:
+        type: string
+        description: name to display
       id:
         type: integer
       taxonomy:
@@ -384,6 +477,11 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Vendor'
+  Images:
+    type: array
+    items:
+      $ref: '#/definitions/ImagePreview'
+
 
   Galleries:
     type: object
@@ -479,7 +577,7 @@ definitions:
         type: string
         description: human readable tag name
 
-#Detail and Vendor are loosely abstracted to "terms".  Can to followable?
+# should Detail ids be unique across all taxonomies (just use the term_taxonomy_id from wordpress). 
   Detail:
     type: object
     description: gallery level "tags".
@@ -488,7 +586,7 @@ definitions:
         type: integer
       name:
         type: string
-        description: name of detail
+        description: name to display
       taxonomy:
         type: string
         description: slug used to find galleries
