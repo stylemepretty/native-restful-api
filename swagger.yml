@@ -65,10 +65,16 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/gallery:
+  /api/v2/gallery/{id}:
     get:
       tags:
         - gallery
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          type: integer
       responses:
         200:
           description: Successful response
@@ -79,7 +85,7 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/image:
+  /api/v2/image/{id}:
     get:
       tags:
         - image
@@ -90,7 +96,7 @@ paths:
       parameters:
         -
           name: id
-          in: query
+          in: path
           description: Id of `Image` object to query
           required: true
           type: integer
@@ -495,4 +501,3 @@ definitions:
       name:
         type: string
         description: Name of vendor
-        
