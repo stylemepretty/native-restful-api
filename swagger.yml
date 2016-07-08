@@ -365,7 +365,7 @@ paths:
              $ref: '#/definitions/Error'
 
   /api/v2/user/favorites/search:
-    post:
+    get:
       tags:
           - user
       summary: Search users favorite images. 
@@ -393,7 +393,7 @@ paths:
              $ref: '#/definitions/Error'
 
   /api/v2/recommendFollows:
-    post:
+    get:
       tags:
           - user
       summary: Get an ordered list of follows to recommend to the user
