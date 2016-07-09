@@ -65,6 +65,26 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
+  /api/v2/vendor/{id}:
+    get:
+      tags:
+        - vendor
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/VendorInfo'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
   /api/v2/gallery/{id}:
     get:
       tags:
@@ -467,6 +487,68 @@ definitions:
     items:
       $ref: '#/definitions/Object'
 
+# this could be less rigid abstraction with more layers if we felt you should be able to follow more things
+  Followable:
+    type: object
+    discriminator: objType #either a Vendor or Detail
+    properties:
+      name:
+        type: string
+        description: name to display
+      id:
+        type: integer
+      taxonomy:
+        type: string
+        description: taxonomy of the 'Detail' or 'Vendor' for Vendor.
+        enum:
+        - season
+        - style
+        - setting
+        - location
+        - category  
+        - vendor 
+      following:
+        type: boolean
+        description: is the user following this? 
+    required:
+    - id
+    - name
+    - objType
+    - taxonomy
+    - following
+
+  Detail:
+    description: Details for a gallery
+    allOf:
+    - $ref: '#/definitions/Followable'
+    - type: object
+
+  Vendor:
+    description: Vendor associated with a Gallery
+    allOf:
+    - $ref: '#/definitions/Followable'
+    - type: object
+
+#TODO: is this needed? Should we just have one vendor record? 
+  VendorInfo:
+    type: object
+    description: Vendor associated with a Gallery
+    properties:
+      name:
+        type: string
+        description: name to display
+      id:
+        type: integer
+      url:
+        type: string
+        description: URL of vendor website
+      profile_img_url:
+        type: string
+        description: profile image URL
+      description:
+        type: string
+        description: description of the vendor
+
 #TODO: rename to Followable
   Object:
     type: object
@@ -591,25 +673,4 @@ definitions:
         type: string
         description: human readable tag name
 
-# should Detail ids be unique across all taxonomies (just use the term_taxonomy_id from wordpress).
-  Detail:
-    type: object
-    description: gallery level "tags".
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-        description: name to display
-      taxonomy:
-        type: string
-        description: slug used to find galleries
 
-  Vendor:
-    type: object
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-        description: Name of vendor
