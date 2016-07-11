@@ -449,6 +449,7 @@ paths:
     get:
       tags:
         - gallery
+      summary: Get `Gallery` object with an id matching id parameter
       parameters:
         -
           name: id
@@ -469,7 +470,7 @@ paths:
     get:
       tags:
         - image
-      summary: Get `Image` metdata
+      summary: Get `Image` object with an id matching id parameter
       operationId: getImageMetadata
       consumes:
         - application/json
@@ -495,6 +496,7 @@ paths:
     get:
       tags:
         - vendor
+      summary: Get `Vendor` object with an id matching id parameter
       parameters:
         -
           name: id
@@ -718,11 +720,6 @@ definitions:
       thumb:
         type: string
         description: Main image.
-      thumbs:
-        type: array
-        items:
-          type: string
-          description: URL of thumbs
 
   Gallery:
     description: full gallery object
