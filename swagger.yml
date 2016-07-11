@@ -568,6 +568,18 @@ paths:
           - images
           - galleries
         -
+          name: lat
+          in: query
+          description: Filter by latitude
+          required: false
+          type: integer
+        -
+          name: lng
+          in: query
+          description: Filter by longitude
+          required: false
+          type: integer
+        -
           name: perPage
           in: query
           description: Maximum number of objects
