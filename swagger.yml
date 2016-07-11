@@ -341,7 +341,7 @@ paths:
              $ref: '#/definitions/Error'
 
   /api/v2/user:
-    post:
+    get:
       tags:
           - user
       summary: Get info about the user
@@ -363,7 +363,7 @@ paths:
              $ref: '#/definitions/Error'
 
   /api/v2/user/favorites:
-    post:
+    get:
       tags:
           - user
       summary: Get a users favorite images.
@@ -507,15 +507,11 @@ definitions:
         - location
         - category  
         - vendor 
-      following:
-        type: boolean
-        description: is the user following this? 
     required:
     - id
     - name
     - objType
     - taxonomy
-    - following
 
   Detail:
     description: Details for a gallery
@@ -528,6 +524,10 @@ definitions:
     allOf:
     - $ref: '#/definitions/Followable'
     - type: object
+      properties:
+        is_lbb:
+          type: boolean
+          description: Is the vendor an LBB member? 
 
 #TODO: is this needed? Should we just have one vendor record? 
   VendorInfo:
@@ -548,6 +548,9 @@ definitions:
       description:
         type: string
         description: description of the vendor
+      is_lbb:
+        type: boolean
+        description: is the vendor an LBB member.
 
 #TODO: rename to Followable
   Object:
@@ -589,7 +592,6 @@ definitions:
     items:
       $ref: '#/definitions/ImagePreview'
 
-
   Galleries:
     type: object
     properties:
@@ -623,7 +625,6 @@ definitions:
         items:
           type: string
           description: URL of thumbs
-
 
 #Trying to use composition with allOf this seemed to break stuff.
   Gallery:
