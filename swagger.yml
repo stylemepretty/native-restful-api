@@ -20,254 +20,11 @@ tags:
     -
       name: user
       description: Api routes involving user actions
+    -
+      name: vendor
+      description: Api routes involving vendor actions
 
 paths:
-  /api/v2/galleries:
-    get:
-      tags:
-          - gallery
-      summary: Get `Preview` objects matching queried `Vendor` and `Detail` parameters
-      operationId: getFeedGalleries
-      consumes:
-        - application/json
-      parameters:
-        -
-          name: perPage
-          in: query
-          description: Maximum number of `GalleryPreview` objects
-          required: false
-          type: integer
-        -
-          name: last
-          in: query
-          description: Query `GalleryPreview` objects with an id older than parameter
-          required: false
-          type: integer
-        -
-          name: vendor
-          in: query
-          description: Query `GalleryPreview` objects matching a `Vendor` id
-          required: false
-          type: integer
-        -
-          name: detail
-          in: query
-          description: Query `GalleryPreview` objects matching a `Detail` id
-          required: false
-          type: integer
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Galleries'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/vendor/{id}:
-    get:
-      tags:
-        - vendor
-      parameters:
-        -
-          name: id
-          in: path
-          required: true
-          type: integer
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/VendorInfo'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/gallery/{id}:
-    get:
-      tags:
-        - gallery
-      parameters:
-        -
-          name: id
-          in: path
-          required: true
-          type: integer
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Gallery'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/image/{id}:
-    get:
-      tags:
-        - image
-      summary: Get `Image` metdata
-      operationId: getImageMetadata
-      consumes:
-        - application/json
-      parameters:
-        -
-          name: id
-          in: path
-          description: Id of `Image` object to query
-          required: true
-          type: integer
-
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Image'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/following:
-    get:
-      tags:
-        - user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-      summary: Returns all `Object` objects the current user is following
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Following'
-        403:
-          description: Unauthorized response
-          schema:
-             $ref: '#/definitions/Error'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/follow:
-    post:
-      tags:
-        - user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-        -
-          name: taxonomy
-          in: query
-          description: type of object to follow, can be "detail" or "vendor"
-          required: true
-          type: string
-        -
-          name: id
-          in: query
-          description: Id of `Detail` object or `Vendor` object
-          required: true
-          type: integer
-      summary: Allow users to follow a `Object` which can be either a detail or vendor
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Following'
-        403:
-          description: Unauthorized response
-          schema:
-             $ref: '#/definitions/Error'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/unfollow:
-    post:
-      tags:
-        - user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-        -
-          name: taxonomy
-          in: query
-          description: type of object to unfollowing, can be "detail" or "vendor"
-          required: true
-          type: string
-        -
-          name: id
-          in: query
-          description: Id of `Detail` object or `Vendor` object
-          required: true
-          type: integer
-      summary: Unfollow a `Object`
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/Following'
-        403:
-          description: Unauthorized response
-          schema:
-             $ref: '#/definitions/Error'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /wp-json/wp/v2/users:
-    post:
-      tags:
-          - user
-      summary: Create a new user
-      operationId: createUser
-      schemes:
-        - http
-        - https
-      parameters:
-        -
-          name: username
-          in: formData
-          required: true
-          type: string
-        -
-          name: email
-          in: formData
-          required: true
-          type: string
-        -
-          name: password
-          in: formData
-          required: true
-          type: string
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/User'
-        403:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
   /wp-json/jwt-auth/v1/token:
     post:
       tags:
@@ -306,7 +63,7 @@ paths:
               user_display_name:
                 type: string
         403:
-          description: Failed authentication
+          description: Unauthorized request
           schema:
              $ref: '#/definitions/Error'
 
@@ -336,7 +93,75 @@ paths:
                 type: string
                 description: If valid code will be set to jwt_auth_valid_token
         403:
-          description: Invalid token
+          description: Unauthorized request
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+  /api/v2/vendor/{id}:
+    get:
+      tags:
+        - vendor
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/VendorInfo'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/gallery/{id}:
+    get:
+=======
+  /wp-json/wp/v2/users:
+    post:
+>>>>>>> bunch of edits and a added search route
+      tags:
+          - user
+      summary: Create a new user
+      operationId: createUser
+      schemes:
+        - http
+        - https
+      parameters:
+        -
+          name: username
+          in: formData
+          required: true
+          type: string
+        -
+          name: email
+          in: formData
+          required: true
+          type: string
+        -
+          name: password
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/User'
+        403:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
 
@@ -344,7 +169,31 @@ paths:
     get:
       tags:
           - user
-      summary: Get info about the user
+      summary: Get additional details about the current user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/User'
+        403:
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+    put:
+      tags:
+          - user
+      summary: Save additional details about the current user
       parameters:
         -
           name: Authorization
@@ -361,12 +210,15 @@ paths:
           description: Invalid token
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
-  /api/v2/user/favorites:
+  /api/v2/user/follow:
     get:
       tags:
-          - user
-      summary: Get a users favorite images.
+        - user
       parameters:
         -
           name: Authorization
@@ -374,21 +226,23 @@ paths:
           description: Authorization token
           required: true
           type: string
+      summary: Returns all `Followable` objects the current user is following
       responses:
         200:
           description: Successful response
           schema:
-             $ref: '#/definitions/Images'
+             $ref: '#/definitions/Following'
         403:
-          description: Invalid token
+          description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
-
-  /api/v2/user/favorites/search:
-    get:
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+    post:
       tags:
-          - user
-      summary: Search users favorite images.
+        - user
       parameters:
         -
           name: Authorization
@@ -397,22 +251,69 @@ paths:
           required: true
           type: string
         -
-          name: q
+          name: taxonomy
           in: query
-          description: Keyword entered by user for search
+          description: type of object to follow, can be "detail" or "vendor"
           required: true
           type: string
+        -
+          name: id
+          in: query
+          description: Id of `Detail` object or `Vendor` object
+          required: true
+          type: integer
+      summary: Allow users to follow a `Object` which can be either a detail or vendor
       responses:
         200:
           description: Successful response
           schema:
-             $ref: '#/definitions/Images'
+             $ref: '#/definitions/Following'
         403:
-          description: Invalid token
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: type of object to unfollowing, can be "detail" or "vendor"
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: Id of `Detail` object or `Vendor` object
+          required: true
+          type: integer
+      summary: Unfollow a `Object`
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Following'
+        403:
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/recommendFollows:
+  /api/v2/user/follows/recommended:
     get:
       tags:
           - user
@@ -428,12 +329,266 @@ paths:
         200:
           description: Successful response
           schema:
-             $ref: '#/definitions/Object'
+             $ref: '#/definitions/Followable'
         403:
           description: Invalid token
           schema:
              $ref: '#/definitions/Error'
 
+  /api/v2/user/favorite:
+    get:
+      tags:
+          - user
+      summary: Search users favorite images.
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: query
+          in: query
+          description: Keyword entered by user for search
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Images'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+    post:
+      tags:
+          - user
+      summary: Create a new favorite for the current user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: type of object to favorite, currenty only supporting a tag
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: Id of `Tag` to favorite
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Images'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+
+  /api/v2/user:
+    get:
+=======
+    delete:
+>>>>>>> bunch of edits and a added search route
+      tags:
+          - user
+      summary: Delete a favorite for the current user
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+        -
+          name: taxonomy
+          in: query
+          description: type of object to favorite, currenty only supporting a tag
+          required: true
+          type: string
+        -
+          name: id
+          in: query
+          description: Id of `Tag` to favorite
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Images'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+  /api/v2/user/favorites:
+=======
+  /api/v2/galleries:
+>>>>>>> bunch of edits and a added search route
+    get:
+      tags:
+          - gallery
+      summary: Get `GalleryPreview` objects matching queried `Vendor` and `Detail` parameters
+      operationId: getFeedGalleries
+      consumes:
+        - application/json
+      parameters:
+        -
+          name: perPage
+          in: query
+          description: Maximum number of `GalleryPreview` objects
+          required: false
+          type: integer
+        -
+          name: last
+          in: query
+          description: Query `GalleryPreview` objects with an id older than parameter
+          required: false
+          type: integer
+        -
+          name: vendor
+          in: query
+          description: Query `GalleryPreview` objects matching a `Vendor` id
+          required: false
+          type: integer
+        -
+          name: detail
+          in: query
+          description: Query `GalleryPreview` objects matching a `Detail` id
+          required: false
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Galleries'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+  /api/v2/user/favorites/search:
+=======
+  /api/v2/gallery/{id}:
+>>>>>>> bunch of edits and a added search route
+    get:
+      tags:
+        - gallery
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Gallery'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/image/{id}:
+    get:
+      tags:
+        - image
+      summary: Get `Image` metdata
+      operationId: getImageMetadata
+      consumes:
+        - application/json
+      parameters:
+        -
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+          name: q
+          in: query
+          description: Keyword entered by user for search
+=======
+          name: id
+          in: path
+          description: Id of `Image` object to query
+>>>>>>> bunch of edits and a added search route
+          required: true
+          type: integer
+
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Image'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+  /api/v2/recommendFollows:
+=======
+  /api/v2/vendor/{id}:
+>>>>>>> bunch of edits and a added search route
+    get:
+      tags:
+        - vendor
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+             $ref: '#/definitions/Vendor'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /api/v2/search/top:
+    get:
+      tags:
+          - user
+      summary: Get the most popular search results
+      responses:
+        200:
+          description: Successful response
+          schema:
+             type: object
+             properties:
+              vendors:
+                type: array
+                items:
+                  $ref: '#/definitions/Vendor'
+              images:
+                type: array
+                items:
+                  $ref: '#/definitions/Image'
+              galleries:
+                type: array
+                items:
+                  $ref: '#/definitions/Gallery'
+        403:
+          description: Invalid token
+          schema:
+             $ref: '#/definitions/Error'
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
   /api/v2/search/popular:
     get:
       tags:
@@ -452,16 +607,72 @@ paths:
           description: Search query entered by user
           required: true
           type: string
+=======
+  /api/v2/search/{type}:
+    get:
+      tags:
+          - user
+      summary: Get the most popular search results
+      parameters:
+        -
+          name: type
+          in: path
+          description: Type of objects to search for (vendors, images, galleries)
+          required: true
+          type: string
+          enum:
+          - vendors
+          - images
+          - galleries
+        -
+          name: query
+          in: query
+          description: Search query
+          required: true
+          type: string
+          enum:
+          - vendors
+          - images
+          - galleries
+        -
+          name: perPage
+          in: query
+          description: Maximum number of objects
+          required: false
+          type: integer
+        -
+          name: last
+          in: query
+          description: Query objects with an id older than parameter
+          required: false
+          type: integer
+>>>>>>> bunch of edits and a added search route
       responses:
         200:
           description: Successful response
           schema:
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
              $ref: '#/definitions/Object'
         403:
           description: Invalid token
           schema:
              $ref: '#/definitions/Error'
 
+=======
+            type: object
+            properties:
+              last:
+                type: integer
+                description: The `Gallery` object ID matching request parameter or null
+              perPage:
+                type: integer
+                description: Integer matching perPage request parameter or default value
+              results:
+                type: array
+                description: Array of objects matching the type parameter.
+                items:
+                  type: object
+>>>>>>> bunch of edits and a added search route
 
 definitions:
   Error:
@@ -485,8 +696,9 @@ definitions:
   Following:
     type: array
     items:
-      $ref: '#/definitions/Object'
+      $ref: '#/definitions/Followable'
 
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
 # this could be less rigid abstraction with more layers if we felt you should be able to follow more things
   Followable:
     type: object
@@ -554,7 +766,11 @@ definitions:
 
 #TODO: rename to Followable
   Object:
+=======
+  Followable:
+>>>>>>> bunch of edits and a added search route
     type: object
+    discriminator: taxonomy
     properties:
       name:
         type: string
@@ -563,9 +779,50 @@ definitions:
         type: integer
       taxonomy:
         type: string
+        description: taxonomy of the 'Detail' or 'Vendor' for Vendor.
+        enum:
+        - season
+        - style
+        - setting
+        - location
+        - category
+        - vendor
+      following:
+        type: boolean
+        description: is the user following this?
+    required:
+    - id
+    - name
+    - taxonomy
+    - following
 
-  #use allOf for composition if possible.
-  Image:
+  VendorPreview:
+    description: Vendor associated with a Gallery
+    allOf:
+    - $ref: '#/definitions/Followable'
+    - type: object
+      properties:
+        is_lbb:
+          type: boolean
+          description: Is the vendor an LBB member?
+
+  Vendor:
+    description: Vendor associated with a Gallery
+    allOf:
+    - $ref: '#/definitions/VendorPreview'
+    - type: object
+      properties:
+        url:
+          type: string
+          description: URL of vendor website
+        thumb:
+          type: string
+          description: profile image URL
+        description:
+          type: string
+          description: description of the vendor
+
+  ImagePreview:
     type: object
     properties:
       id:
@@ -579,18 +836,88 @@ definitions:
       height:
         type: integer
         description: Height of image.
-      tags:
-        type: array
-        items:
-          $ref: '#/definitions/Tag'
-      vendors:
-        type: array
-        items:
-          $ref: '#/definitions/Vendor'
+
+  Image:
+    allOf:
+    - $ref: '#/definitions/ImagePreview'
+    - type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/definitions/Tag'
+        vendors:
+          type: array
+          items:
+            $ref: '#/definitions/VendorPreview'
+
   Images:
     type: array
     items:
       $ref: '#/definitions/ImagePreview'
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+  Galleries:
+    type: object
+    properties:
+      total:
+        type: integer
+        description: Total `Gallery` objects matching query
+      last:
+        type: integer
+        description: The `Gallery` object ID matching request parameter or null
+      perPage:
+        type: integer
+        description: Integer matching perPage request parameter or default value
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/GalleryPreview'
+
+=======
+>>>>>>> bunch of edits and a added search route
+  GalleryPreview:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+        description: title of gallery
+      thumb:
+        type: string
+        description: Main image.
+      thumbs:
+        type: array
+        items:
+          type: string
+          description: URL of thumbs
+
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
+#Trying to use composition with allOf this seemed to break stuff.
+=======
+>>>>>>> bunch of edits and a added search route
+  Gallery:
+    description: full gallery object
+    allOf:
+    - $ref: '#/definitions/GalleryPreview'
+    - type: object
+      properties:
+        post_url:
+          type: string
+          description: URL of associated post.
+        details:
+          type: array
+          items:
+            $ref: '#/definitions/Detail'
+        vendors:
+          type: array
+          items:
+            $ref: '#/definitions/VendorPreview'
+        images:
+          type: array
+          items:
+            $ref: '#/definitions/ImagePreview'
 
   Galleries:
     type: object
@@ -609,69 +936,22 @@ definitions:
         items:
           $ref: '#/definitions/GalleryPreview'
 
-  GalleryPreview:
-    type: object
-    properties:
-      id:
-        type: integer
-      title:
-        type: string
-        description: title of gallery
-      background:
-        type: string
-        description: Main image.
-      thumbs:
-        type: array
-        items:
-          type: string
-          description: URL of thumbs
+<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
 
-#Trying to use composition with allOf this seemed to break stuff.
-  Gallery:
-    description: full gallery object
+=======
+  Detail:
+    description: Details for a gallery
     allOf:
-    - $ref: '#/definitions/GalleryPreview'
+    - $ref: '#/definitions/Followable'
     - type: object
-      properties:
-        post_url:
-          type: string
-          description: URL of associated post.
-        details:
-          type: array
-          items:
-            $ref: '#/definitions/Detail'
-        vendors:
-          type: array
-          items:
-            $ref: '#/definitions/Vendor'
-        images:
-          type: array
-          items:
-            $ref: '#/definitions/ImagePreview'
-
-  ImagePreview:
-    type: object
-    properties:
-      id:
-        type: integer
-      path:
-        type: string
-        description: Path to image source.
-      width:
-        type: integer
-        description: Width of image.
-      height:
-        type: integer
-        description: Height of image.
 
   Tag:
     type: object
-    description: image level tag
+    description: Image level tag
     properties:
       id:
         type: integer
       name:
         type: string
         description: human readable tag name
-
-
+>>>>>>> bunch of edits and a added search route
