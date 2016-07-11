@@ -101,33 +101,8 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-  /api/v2/vendor/{id}:
-    get:
-      tags:
-        - vendor
-      parameters:
-        -
-          name: id
-          in: path
-          required: true
-          type: integer
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/VendorInfo'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-
-  /api/v2/gallery/{id}:
-    get:
-=======
   /wp-json/wp/v2/users:
     post:
->>>>>>> bunch of edits and a added search route
       tags:
           - user
       summary: Create a new user
@@ -394,13 +369,7 @@ paths:
           description: Invalid token
           schema:
              $ref: '#/definitions/Error'
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-
-  /api/v2/user:
-    get:
-=======
     delete:
->>>>>>> bunch of edits and a added search route
       tags:
           - user
       summary: Delete a favorite for the current user
@@ -433,11 +402,7 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-  /api/v2/user/favorites:
-=======
   /api/v2/galleries:
->>>>>>> bunch of edits and a added search route
     get:
       tags:
           - gallery
@@ -480,11 +445,7 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-  /api/v2/user/favorites/search:
-=======
   /api/v2/gallery/{id}:
->>>>>>> bunch of edits and a added search route
     get:
       tags:
         - gallery
@@ -514,15 +475,9 @@ paths:
         - application/json
       parameters:
         -
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-          name: q
-          in: query
-          description: Keyword entered by user for search
-=======
           name: id
           in: path
           description: Id of `Image` object to query
->>>>>>> bunch of edits and a added search route
           required: true
           type: integer
 
@@ -536,11 +491,7 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-  /api/v2/recommendFollows:
-=======
   /api/v2/vendor/{id}:
->>>>>>> bunch of edits and a added search route
     get:
       tags:
         - vendor
@@ -588,26 +539,6 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-  /api/v2/search/popular:
-    get:
-      tags:
-          - user
-      summary: Get an ordered list of follows to recommend to the user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-        -
-          name: q
-          in: query
-          description: Search query entered by user
-          required: true
-          type: string
-=======
   /api/v2/search/{type}:
     get:
       tags:
@@ -646,19 +577,10 @@ paths:
           description: Query objects with an id older than parameter
           required: false
           type: integer
->>>>>>> bunch of edits and a added search route
       responses:
         200:
           description: Successful response
           schema:
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-             $ref: '#/definitions/Object'
-        403:
-          description: Invalid token
-          schema:
-             $ref: '#/definitions/Error'
-
-=======
             type: object
             properties:
               last:
@@ -672,7 +594,6 @@ paths:
                 description: Array of objects matching the type parameter.
                 items:
                   type: object
->>>>>>> bunch of edits and a added search route
 
 definitions:
   Error:
@@ -698,77 +619,7 @@ definitions:
     items:
       $ref: '#/definitions/Followable'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-# this could be less rigid abstraction with more layers if we felt you should be able to follow more things
   Followable:
-    type: object
-    discriminator: objType #either a Vendor or Detail
-    properties:
-      name:
-        type: string
-        description: name to display
-      id:
-        type: integer
-      taxonomy:
-        type: string
-        description: taxonomy of the 'Detail' or 'Vendor' for Vendor.
-        enum:
-        - season
-        - style
-        - setting
-        - location
-        - category  
-        - vendor 
-    required:
-    - id
-    - name
-    - objType
-    - taxonomy
-
-  Detail:
-    description: Details for a gallery
-    allOf:
-    - $ref: '#/definitions/Followable'
-    - type: object
-
-  Vendor:
-    description: Vendor associated with a Gallery
-    allOf:
-    - $ref: '#/definitions/Followable'
-    - type: object
-      properties:
-        is_lbb:
-          type: boolean
-          description: Is the vendor an LBB member? 
-
-#TODO: is this needed? Should we just have one vendor record? 
-  VendorInfo:
-    type: object
-    description: Vendor associated with a Gallery
-    properties:
-      name:
-        type: string
-        description: name to display
-      id:
-        type: integer
-      url:
-        type: string
-        description: URL of vendor website
-      profile_img_url:
-        type: string
-        description: profile image URL
-      description:
-        type: string
-        description: description of the vendor
-      is_lbb:
-        type: boolean
-        description: is the vendor an LBB member.
-
-#TODO: rename to Followable
-  Object:
-=======
-  Followable:
->>>>>>> bunch of edits and a added search route
     type: object
     discriminator: taxonomy
     properties:
@@ -856,26 +707,6 @@ definitions:
     items:
       $ref: '#/definitions/ImagePreview'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-  Galleries:
-    type: object
-    properties:
-      total:
-        type: integer
-        description: Total `Gallery` objects matching query
-      last:
-        type: integer
-        description: The `Gallery` object ID matching request parameter or null
-      perPage:
-        type: integer
-        description: Integer matching perPage request parameter or default value
-      results:
-        type: array
-        items:
-          $ref: '#/definitions/GalleryPreview'
-
-=======
->>>>>>> bunch of edits and a added search route
   GalleryPreview:
     type: object
     properties:
@@ -893,10 +724,6 @@ definitions:
           type: string
           description: URL of thumbs
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-#Trying to use composition with allOf this seemed to break stuff.
-=======
->>>>>>> bunch of edits and a added search route
   Gallery:
     description: full gallery object
     allOf:
@@ -936,9 +763,6 @@ definitions:
         items:
           $ref: '#/definitions/GalleryPreview'
 
-<<<<<<< ff38b503c8e4b081a200142e0601c30e00e9d28f
-
-=======
   Detail:
     description: Details for a gallery
     allOf:
@@ -954,4 +778,3 @@ definitions:
       name:
         type: string
         description: human readable tag name
->>>>>>> bunch of edits and a added search route
