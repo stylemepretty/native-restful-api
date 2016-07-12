@@ -13,26 +13,41 @@ produces:
 tags:
     -
       name: gallery
-      description: Api routes involving a single gallery or collection of galleries
+      description: API routes involving a single gallery or collection of galleries
     -
       name: image
-      description: Api routes involving a single image or collection of images
+      description: API routes involving a single image or collection of images
     -
       name: user
-      description: Api routes involving user actions
+      description: API routes involving user actions
     -
       name: vendor
-      description: Api routes involving vendor actions
+      description: API routes involving vendor actions
+    -
+      name: authentication
+      description: API routes involving authentication actions
+    -
+      name: authenticated
+      description: API routes that need to be authenticated
+    -
+      name: public
+      description: API routes that can be accessed by the public
+    -
+      name: concerning
+      description: Could cause a security risk or leaves us vulneratble to DOS type attacks
+    -
+      name: search
+      description: API routes dealing with search
 
 paths:
   /wp-json/jwt-auth/v1/token:
     post:
       tags:
           - user
-      summary: Request access token
-      operationId: getToken
+          - authentication
+      summary: Request access token from a username and password
+      operationId: Jwt_Auth_Public::generate_token
       schemes:
-        - http
         - https
       consumes:
         - application/x-www-form-urlencoded
@@ -49,13 +64,12 @@ paths:
           type: string
       responses:
         200:
-          description: Successful response
+          description: Successful login, heres your access token
           schema:
              type: object
              properties:
               token:
                 type: string
-                description: Authorization token
               user_email:
                 type: string
               user_nicename:
@@ -63,7 +77,7 @@ paths:
               user_display_name:
                 type: string
         403:
-          description: Unauthorized request
+          description: Failed login
           schema:
              $ref: '#/definitions/Error'
 
@@ -71,33 +85,32 @@ paths:
     post:
       tags:
           - user
+          - authentication
       summary: Validates a access token
-      operationId: validateToken
-      schemes:
-        - http
-        - https
+      operationId: Jwt_Auth_Public::validate_token
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
       responses:
         200:
-          description: Successful response
+          description: Token is valid, hooray
           schema:
              type: object
              properties:
               code:
                 type: string
-                description: If valid code will be set to jwt_auth_valid_token
+                description: jwt_auth_valid_token
+              data:
+                type: object
+                properties:
+                  status:
+                    type: integer
         403:
-          description: Unauthorized request
-          schema:
-             $ref: '#/definitions/Error'
-        500:
-          description: Failed response
+          description: Invalid token
           schema:
              $ref: '#/definitions/Error'
 
@@ -105,10 +118,11 @@ paths:
     post:
       tags:
           - user
-      summary: Create a new user
-      operationId: createUser
+          - public
+          - concerning
+      summary: Create a new user.
+      operationId: WP_REST_Users_Controller::create_item
       schemes:
-        - http
         - https
       parameters:
         -
@@ -127,29 +141,57 @@ paths:
           required: true
           type: string
       responses:
-        200:
-          description: Successful response
+        201:
+          description: New user successfully created.
           schema:
-             $ref: '#/definitions/User'
-        403:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
+             $ref: '#/definitions/UserPreview'
         500:
-          description: Failed response
+          description: Explanation of why a user was not created.
           schema:
              $ref: '#/definitions/Error'
 
   /api/v2/user:
     get:
       tags:
-          - user
+        - user
+        - authenticated
       summary: Get additional details about the current user
+      schemes:
+        - https
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
+          required: true
+          type: string
+      responses:
+        200:
+          description: Return all addition indormation
+          schema:
+             $ref: '#/definitions/User'
+        403:
+          description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        404:
+          description: User was not found
+          schema:
+             $ref: '#/definitions/Error'
+    put:
+      tags:
+        - user
+        - authenticated
+      summary: Save additional details about the current user
+      schemes:
+        - https
+      consumes:
+        - application/json
+      parameters:
+        -
+          name: HTTP_AUTHORIZATION
+          in: header
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
       responses:
@@ -161,28 +203,8 @@ paths:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
-    put:
-      tags:
-          - user
-      summary: Save additional details about the current user
-      parameters:
-        -
-          name: Authorization
-          in: header
-          description: Authorization token
-          required: true
-          type: string
-      responses:
-        200:
-          description: Successful response
-          schema:
-             $ref: '#/definitions/User'
-        403:
-          description: Invalid token
+        404:
+          description: User was not found
           schema:
              $ref: '#/definitions/Error'
         500:
@@ -194,50 +216,50 @@ paths:
     get:
       tags:
         - user
+        - authenticated
+      summary: Returns array of `Followable` objects which is either a `Detail` object or `Vendor` object.
+      schemes:
+        - https
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
-      summary: Returns all `Followable` objects the current user is following
       responses:
         200:
-          description: Successful response
+          description: Succesfully fetched `Followable` objects
           schema:
              $ref: '#/definitions/Following'
         403:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
     post:
       tags:
         - user
+        - authenticated
+      summary: Follow a `Followable` object with user matching authorization parameter.
+      schemes:
+        - https
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
         -
           name: taxonomy
           in: query
-          description: type of object to follow, can be "detail" or "vendor"
           required: true
           type: string
         -
           name: id
           in: query
-          description: Id of `Detail` object or `Vendor` object
           required: true
           type: integer
-      summary: Allow users to follow a `Object` which can be either a detail or vendor
       responses:
         200:
           description: Successful response
@@ -254,26 +276,27 @@ paths:
     delete:
       tags:
         - user
+        - authenticated
+      summary: Unfollow a `Followable` object with user matching authorization parameter.
+      schemes:
+        - https
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
         -
           name: taxonomy
           in: query
-          description: type of object to unfollowing, can be "detail" or "vendor"
           required: true
           type: string
         -
           name: id
           in: query
-          description: Id of `Detail` object or `Vendor` object
           required: true
           type: integer
-      summary: Unfollow a `Object`
       responses:
         200:
           description: Successful response
@@ -292,12 +315,15 @@ paths:
     get:
       tags:
           - user
-      summary: Get an ordered list of follows to recommend to the user
+          - authenticated
+      schemes:
+        - https
+      summary: Get an array of `Followable` objects that are recommended to the user matching the authorization patameter.
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
       responses:
@@ -313,19 +339,22 @@ paths:
   /api/v2/user/favorite:
     get:
       tags:
-          - user
-      summary: Search users favorite images.
+        - user
+        - authenticated
+      schemes:
+        - https
+      summary: Search the favorites of the user matching authorization parameter.
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
         -
           name: query
           in: query
-          description: Keyword entered by user for search
+          description: Keyword to search favorites by
           required: true
           type: string
       responses:
@@ -339,25 +368,28 @@ paths:
              $ref: '#/definitions/Error'
     post:
       tags:
-          - user
-      summary: Create a new favorite for the current user
+        - user
+        - authenticated
+      schemes:
+        - https
+      summary: Create a new favorite for the user matching the authorization parameter.
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
         -
           name: taxonomy
           in: query
-          description: type of object to favorite, currenty only supporting a tag
+          description: Type of object to favorite, currenty only supporting tag for `Tag` object
           required: true
           type: string
         -
           name: id
           in: query
-          description: Id of `Tag` to favorite
+          description: Id of `Tag` object to favorite
           required: true
           type: integer
       responses:
@@ -371,25 +403,28 @@ paths:
              $ref: '#/definitions/Error'
     delete:
       tags:
-          - user
-      summary: Delete a favorite for the current user
+        - user
+        - authenticated
+      schemes:
+        - https
+      summary: Delete a favorite for the user matching the authorization parameter.
       parameters:
         -
-          name: Authorization
+          name: HTTP_AUTHORIZATION
           in: header
-          description: Authorization token
+          description: Value must be formatted like so "Bearer <Access Token>"
           required: true
           type: string
         -
           name: taxonomy
           in: query
-          description: type of object to favorite, currenty only supporting a tag
+          description: Type of object to favorite, currenty only supporting tag for `Tag` object
           required: true
           type: string
         -
           name: id
           in: query
-          description: Id of `Tag` to favorite
+          description: Id of `Tag` object to favorite
           required: true
           type: integer
       responses:
@@ -405,34 +440,35 @@ paths:
   /api/v2/galleries:
     get:
       tags:
-          - gallery
-      summary: Get `GalleryPreview` objects matching queried `Vendor` and `Detail` parameters
-      operationId: getFeedGalleries
-      consumes:
-        - application/json
+        - gallery
+        - public
+      schemes:
+        - https
+        - http
+      summary: Get `GalleryPreview` objects matching queried `Vendor` object id and `Detail` object id parameters
       parameters:
         -
           name: perPage
           in: query
-          description: Maximum number of `GalleryPreview` objects
+          description: Maximum number of `GalleryPreview` objects to return
           required: false
           type: integer
         -
           name: last
           in: query
-          description: Query `GalleryPreview` objects with an id older than parameter
+          description: This value should be a `GalleryPreview` object id. Fetchs `GalleryPreview` objects with an id less than this paramaeter
           required: false
           type: integer
         -
           name: vendor
           in: query
-          description: Query `GalleryPreview` objects matching a `Vendor` id
+          description: This value should be a `Vendor` object id. Query `GalleryPreview` objects that have a related `Vendor` object.
           required: false
           type: integer
         -
           name: detail
           in: query
-          description: Query `GalleryPreview` objects matching a `Detail` id
+          description: This value should be a `Detail` object id. Query `GalleryPreview` objects that have a related `Detail` object.
           required: false
           type: integer
       responses:
@@ -449,7 +485,11 @@ paths:
     get:
       tags:
         - gallery
-      summary: Get `Gallery` object with an id matching id parameter
+        - public
+      schemes:
+        - http
+        - https
+      summary: Return a `Gallery` object by id
       parameters:
         -
           name: id
@@ -458,11 +498,11 @@ paths:
           type: integer
       responses:
         200:
-          description: Successful response
+          description: Gallery found
           schema:
              $ref: '#/definitions/Gallery'
-        500:
-          description: Failed response
+        404:
+          description: Gallery not found
           schema:
              $ref: '#/definitions/Error'
 
@@ -470,25 +510,25 @@ paths:
     get:
       tags:
         - image
-      summary: Get `Image` object with an id matching id parameter
-      operationId: getImageMetadata
-      consumes:
-        - application/json
+        - public
+      schemes:
+        - http
+        - https
+      summary: Return a `Image` object by id
       parameters:
         -
           name: id
           in: path
-          description: Id of `Image` object to query
           required: true
           type: integer
 
       responses:
         200:
-          description: Successful response
+          description: Image found
           schema:
              $ref: '#/definitions/Image'
-        500:
-          description: Failed response
+        404:
+          description: Image not found
           schema:
              $ref: '#/definitions/Error'
 
@@ -496,7 +536,11 @@ paths:
     get:
       tags:
         - vendor
-      summary: Get `Vendor` object with an id matching id parameter
+        - public
+      schemes:
+        - http
+        - https
+      summary: Return a `Vendor` object by id
       parameters:
         -
           name: id
@@ -505,19 +549,20 @@ paths:
           type: integer
       responses:
         200:
-          description: Successful response
+          description: Vendor found
           schema:
              $ref: '#/definitions/Vendor'
-        500:
-          description: Failed response
+        404:
+          description: Vendor not found
           schema:
              $ref: '#/definitions/Error'
 
   /api/v2/search/top:
     get:
       tags:
-          - user
-      summary: Get the most popular search results
+          - search
+          - public
+      summary: Get most popular search results grouped by `Vendor` objects, `Gallery` objects and `Image` objects
       responses:
         200:
           description: Successful response
@@ -536,16 +581,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Gallery'
-        403:
-          description: Invalid token
-          schema:
-             $ref: '#/definitions/Error'
 
   /api/v2/search/{type}:
     get:
       tags:
-          - user
-      summary: Get the most popular search results
+          - search
+          - public
+      summary: Search either `Vendor` objects, `Gallery` objects or `Image` objects by query and location.
       parameters:
         -
           name: type
@@ -560,8 +602,7 @@ paths:
         -
           name: query
           in: query
-          description: Search query
-          required: true
+          required: false
           type: string
           enum:
           - vendors
@@ -588,7 +629,7 @@ paths:
         -
           name: last
           in: query
-          description: Query objects with an id older than parameter
+          description: This value should be a id of the object type you are searching for. Fetchs `Vendor` objects, `Gallery` objects or `Image` objects with an id less than this paramaeter
           required: false
           type: integer
       responses:
@@ -618,7 +659,7 @@ definitions:
       message:
         type: string
 
-  User:
+  UserPreview:
     type: object
     properties:
       id:
@@ -627,6 +668,17 @@ definitions:
         type: string
       email:
         type: string
+
+  User:
+    type: object
+    allOf:
+    - $ref: '#/definitions/UserPreview'
+    - type: object
+      properties:
+        wedding_date:
+          type: string
+        full_name:
+          type: string
 
   Following:
     type: array
