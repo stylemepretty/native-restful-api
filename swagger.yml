@@ -86,6 +86,7 @@ paths:
       tags:
           - user
           - authentication
+          - authenticated
       summary: Validates a access token
       operationId: Jwt_Auth_Public::validate_token
       parameters:
