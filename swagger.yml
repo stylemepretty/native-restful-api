@@ -38,6 +38,15 @@ tags:
     -
       name: search
       description: API routes dealing with search
+    -
+      name: working
+      description: API route returns data
+    -
+      name: complete
+      description: API routes that are 100% working
+    -
+      name: fake
+      description: API routes that are working but return fake data
 
 paths:
   /wp-json/jwt-auth/v1/token:
@@ -443,6 +452,8 @@ paths:
       tags:
         - gallery
         - public
+        - working
+        - fake
       schemes:
         - https
         - http
@@ -477,16 +488,14 @@ paths:
           description: Successful response
           schema:
              $ref: '#/definitions/Galleries'
-        500:
-          description: Failed response
-          schema:
-             $ref: '#/definitions/Error'
 
   /api/v2/gallery/{id}:
     get:
       tags:
         - gallery
         - public
+        - working
+        - fake
       schemes:
         - http
         - https
@@ -705,14 +714,10 @@ definitions:
         - location
         - category
         - vendor
-      following:
-        type: boolean
-        description: is the user following this?
     required:
     - id
     - name
     - taxonomy
-    - following
 
   VendorPreview:
     description: Vendor associated with a Gallery
@@ -720,6 +725,8 @@ definitions:
     - $ref: '#/definitions/Followable'
     - type: object
       properties:
+        type:
+          type: string
         is_lbb:
           type: boolean
           description: Is the vendor an LBB member?
@@ -745,6 +752,9 @@ definitions:
     properties:
       id:
         type: integer
+      gid:
+        type: integer
+        description: Id of realated `Gallery` object
       path:
         type: string
         description: Path to image source.

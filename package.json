@@ -1,0 +1,21 @@
+{
+  "name": "native-restful-api",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "swagger-codegen generate -i swagger.yml -l swagger",
+    "test": "phpunit --bootstrap tests/bootstrap.php tests/api/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stylemepretty/native-restful-api.git"
+  },
+  "author": "adamjv90@gmail.com",
+  "bugs": {
+    "url": "https://github.com/stylemepretty/native-restful-api/issues"
+  },
+  "homepage": "https://github.com/stylemepretty/native-restful-api#readme"
+}

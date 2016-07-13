@@ -1,0 +1,987 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "0.0.1",
+    "title" : "SMP Native REST API",
+    "contact" : {
+      "email" : "adam@stylemepretty.com"
+    }
+  },
+  "host" : "10.98.192.9",
+  "tags" : [ {
+    "name" : "gallery",
+    "description" : "API routes involving a single gallery or collection of galleries"
+  }, {
+    "name" : "image",
+    "description" : "API routes involving a single image or collection of images"
+  }, {
+    "name" : "user",
+    "description" : "API routes involving user actions"
+  }, {
+    "name" : "vendor",
+    "description" : "API routes involving vendor actions"
+  }, {
+    "name" : "authentication",
+    "description" : "API routes involving authentication actions"
+  }, {
+    "name" : "authenticated",
+    "description" : "API routes that need to be authenticated"
+  }, {
+    "name" : "public",
+    "description" : "API routes that can be accessed by the public"
+  }, {
+    "name" : "concerning",
+    "description" : "Could cause a security risk or leaves us vulneratble to DOS type attacks"
+  }, {
+    "name" : "search",
+    "description" : "API routes dealing with search"
+  }, {
+    "name" : "working",
+    "description" : "API route returns data"
+  }, {
+    "name" : "complete",
+    "description" : "API routes that are 100% working"
+  }, {
+    "name" : "fake",
+    "description" : "API routes that are working but return fake data"
+  } ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/api/v2/galleries" : {
+      "get" : {
+        "tags" : [ "gallery", "public", "working", "fake" ],
+        "summary" : "Get `GalleryPreview` objects matching queried `Vendor` object id and `Detail` object id parameters",
+        "schemes" : [ "https", "http" ],
+        "parameters" : [ {
+          "name" : "perPage",
+          "in" : "query",
+          "description" : "Maximum number of `GalleryPreview` objects to return",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "last",
+          "in" : "query",
+          "description" : "This value should be a `GalleryPreview` object id. Fetchs `GalleryPreview` objects with an id less than this paramaeter",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "vendor",
+          "in" : "query",
+          "description" : "This value should be a `Vendor` object id. Query `GalleryPreview` objects that have a related `Vendor` object.",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "detail",
+          "in" : "query",
+          "description" : "This value should be a `Detail` object id. Query `GalleryPreview` objects that have a related `Detail` object.",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Galleries"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/gallery/{id}" : {
+      "get" : {
+        "tags" : [ "gallery", "public", "working", "fake" ],
+        "summary" : "Return a `Gallery` object by id",
+        "schemes" : [ "http", "https" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Gallery found",
+            "schema" : {
+              "$ref" : "#/definitions/Gallery"
+            }
+          },
+          "404" : {
+            "description" : "Gallery not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/image/{id}" : {
+      "get" : {
+        "tags" : [ "image", "public" ],
+        "summary" : "Return a `Image` object by id",
+        "schemes" : [ "http", "https" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Image found",
+            "schema" : {
+              "$ref" : "#/definitions/Image"
+            }
+          },
+          "404" : {
+            "description" : "Image not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/search/top" : {
+      "get" : {
+        "tags" : [ "search", "public" ],
+        "summary" : "Get most popular search results grouped by `Vendor` objects, `Gallery` objects and `Image` objects",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/search/{type}" : {
+      "get" : {
+        "tags" : [ "search", "public" ],
+        "summary" : "Search either `Vendor` objects, `Gallery` objects or `Image` objects by query and location.",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Type of objects to search for (vendors, images, galleries)",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "vendors", "images", "galleries" ]
+        }, {
+          "name" : "query",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "vendors", "images", "galleries" ]
+        }, {
+          "name" : "lat",
+          "in" : "query",
+          "description" : "Filter by latitude",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "lng",
+          "in" : "query",
+          "description" : "Filter by longitude",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "perPage",
+          "in" : "query",
+          "description" : "Maximum number of objects",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "last",
+          "in" : "query",
+          "description" : "This value should be a id of the object type you are searching for. Fetchs `Vendor` objects, `Gallery` objects or `Image` objects with an id less than this paramaeter",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_1"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/user" : {
+      "get" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Get additional details about the current user",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Return all addition indormation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "User was not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Save additional details about the current user",
+        "schemes" : [ "https" ],
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "User was not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/user/favorite" : {
+      "get" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Search the favorites of the user matching authorization parameter.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "query",
+          "in" : "query",
+          "description" : "Keyword to search favorites by",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Images"
+            }
+          },
+          "403" : {
+            "description" : "Invalid token",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Create a new favorite for the user matching the authorization parameter.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "taxonomy",
+          "in" : "query",
+          "description" : "Type of object to favorite, currenty only supporting tag for `Tag` object",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Id of `Tag` object to favorite",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Images"
+            }
+          },
+          "403" : {
+            "description" : "Invalid token",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Delete a favorite for the user matching the authorization parameter.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "taxonomy",
+          "in" : "query",
+          "description" : "Type of object to favorite, currenty only supporting tag for `Tag` object",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Id of `Tag` object to favorite",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Images"
+            }
+          },
+          "403" : {
+            "description" : "Invalid token",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/user/follow" : {
+      "get" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Returns array of `Followable` objects which is either a `Detail` object or `Vendor` object.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succesfully fetched `Followable` objects",
+            "schema" : {
+              "$ref" : "#/definitions/Following"
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Follow a `Followable` object with user matching authorization parameter.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "taxonomy",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Following"
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Unfollow a `Followable` object with user matching authorization parameter.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "taxonomy",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Following"
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/user/follows/recommended" : {
+      "get" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Get an array of `Followable` objects that are recommended to the user matching the authorization patameter.",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/Followable"
+            }
+          },
+          "403" : {
+            "description" : "Invalid token",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/vendor/{id}" : {
+      "get" : {
+        "tags" : [ "vendor", "public" ],
+        "summary" : "Return a `Vendor` object by id",
+        "schemes" : [ "http", "https" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Vendor found",
+            "schema" : {
+              "$ref" : "#/definitions/Vendor"
+            }
+          },
+          "404" : {
+            "description" : "Vendor not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/wp-json/jwt-auth/v1/token" : {
+      "post" : {
+        "tags" : [ "user", "authentication" ],
+        "summary" : "Request access token from a username and password",
+        "operationId" : "Jwt_Auth_Public::generate_token",
+        "schemes" : [ "https" ],
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful login, heres your access token",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          },
+          "403" : {
+            "description" : "Failed login",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/wp-json/jwt-auth/v1/token/validate" : {
+      "post" : {
+        "tags" : [ "user", "authentication", "authenticated" ],
+        "summary" : "Validates a access token",
+        "operationId" : "Jwt_Auth_Public::validate_token",
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Token is valid, hooray",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          },
+          "403" : {
+            "description" : "Invalid token",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/wp-json/wp/v2/users" : {
+      "post" : {
+        "tags" : [ "user", "public", "concerning" ],
+        "summary" : "Create a new user.",
+        "operationId" : "WP_REST_Users_Controller::create_item",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "New user successfully created.",
+            "schema" : {
+              "$ref" : "#/definitions/UserPreview"
+            }
+          },
+          "500" : {
+            "description" : "Explanation of why a user was not created.",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Error" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string"
+        },
+        "message" : {
+          "type" : "string"
+        }
+      }
+    },
+    "UserPreview" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "username" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        }
+      }
+    },
+    "User" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/UserPreview"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "wedding_date" : {
+            "type" : "string"
+          },
+          "full_name" : {
+            "type" : "string"
+          }
+        }
+      } ]
+    },
+    "Following" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Followable"
+      }
+    },
+    "Followable" : {
+      "type" : "object",
+      "required" : [ "id", "name", "taxonomy" ],
+      "discriminator" : "taxonomy",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "name to display"
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "taxonomy" : {
+          "type" : "string",
+          "description" : "taxonomy of the 'Detail' or 'Vendor' for Vendor.",
+          "enum" : [ "season", "style", "setting", "location", "category", "vendor" ]
+        }
+      }
+    },
+    "VendorPreview" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Followable"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string"
+          },
+          "is_lbb" : {
+            "type" : "boolean",
+            "description" : "Is the vendor an LBB member?"
+          }
+        }
+      } ],
+      "description" : "Vendor associated with a Gallery"
+    },
+    "Vendor" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/VendorPreview"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "url" : {
+            "type" : "string",
+            "description" : "URL of vendor website"
+          },
+          "thumb" : {
+            "type" : "string",
+            "description" : "profile image URL"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "description of the vendor"
+          }
+        }
+      } ],
+      "description" : "Vendor associated with a Gallery"
+    },
+    "ImagePreview" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "gid" : {
+          "type" : "integer",
+          "description" : "Id of realated `Gallery` object"
+        },
+        "path" : {
+          "type" : "string",
+          "description" : "Path to image source."
+        },
+        "width" : {
+          "type" : "integer",
+          "description" : "Width of image."
+        },
+        "height" : {
+          "type" : "integer",
+          "description" : "Height of image."
+        }
+      }
+    },
+    "Image" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ImagePreview"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Tag"
+            }
+          },
+          "vendors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/VendorPreview"
+            }
+          }
+        }
+      } ]
+    },
+    "Images" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/ImagePreview"
+      }
+    },
+    "GalleryPreview" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "title of gallery"
+        },
+        "thumb" : {
+          "type" : "string",
+          "description" : "Main image."
+        }
+      }
+    },
+    "Gallery" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/GalleryPreview"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "post_url" : {
+            "type" : "string",
+            "description" : "URL of associated post."
+          },
+          "details" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Detail"
+            }
+          },
+          "vendors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/VendorPreview"
+            }
+          },
+          "images" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ImagePreview"
+            }
+          }
+        }
+      } ],
+      "description" : "full gallery object"
+    },
+    "Galleries" : {
+      "type" : "object",
+      "properties" : {
+        "total" : {
+          "type" : "integer",
+          "description" : "Total `Gallery` objects matching query"
+        },
+        "last" : {
+          "type" : "integer",
+          "description" : "The `Gallery` object ID matching request parameter or null"
+        },
+        "perPage" : {
+          "type" : "integer",
+          "description" : "Integer matching perPage request parameter or default value"
+        },
+        "results" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/GalleryPreview"
+          }
+        }
+      }
+    },
+    "Detail" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Followable"
+      }, {
+        "type" : "object"
+      } ],
+      "description" : "Details for a gallery"
+    },
+    "Tag" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "human readable tag name"
+        }
+      },
+      "description" : "Image level tag"
+    },
+    "inline_response_200" : {
+      "properties" : {
+        "images" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Image"
+          }
+        },
+        "galleries" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Gallery"
+          }
+        },
+        "vendors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Vendor"
+          }
+        }
+      }
+    },
+    "inline_response_200_1" : {
+      "properties" : {
+        "perPage" : {
+          "type" : "integer",
+          "description" : "Integer matching perPage request parameter or default value"
+        },
+        "last" : {
+          "type" : "integer",
+          "description" : "The `Gallery` object ID matching request parameter or null"
+        },
+        "results" : {
+          "type" : "array",
+          "description" : "Array of objects matching the type parameter.",
+          "items" : {
+            "type" : "object",
+            "properties" : { }
+          }
+        }
+      }
+    },
+    "inline_response_200_2" : {
+      "properties" : {
+        "user_email" : {
+          "type" : "string"
+        },
+        "user_nicename" : {
+          "type" : "string"
+        },
+        "user_display_name" : {
+          "type" : "string"
+        },
+        "token" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_3_data" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "inline_response_200_3" : {
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "jwt_auth_valid_token"
+        },
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_3_data"
+        }
+      }
+    }
+  }
+}

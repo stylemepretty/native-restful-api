@@ -1,3 +1,2 @@
-## Native REST API
-
-[View / Edit Rest API Spec](http://editor.swagger.io/#/?import=https://raw.githubusercontent.com/stylemepretty/native-restful-api/master/swagger.yml)
+# Swagger JSON
+This is a swagger JSON built by the [swagger-codegen](https://github.com/swagger-api/swagger-codegen) project.
