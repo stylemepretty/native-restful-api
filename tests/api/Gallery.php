@@ -27,7 +27,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         if (version_compare(ClientInterface::VERSION, '6.0', '>=')) {
             self::markTestSkipped('This example requires Guzzle V5 installed');
         }
-        self::$schemaManager = SchemaManager::fromUri('https://raw.githubusercontent.com/stylemepretty/native-restful-api/master/swagger.yml');
+        self::$schemaManager = SchemaManager::fromUri('https://raw.githubusercontent.com/stylemepretty/native-restful-api/master/swagger.json');
     }
 
     protected function setUp()

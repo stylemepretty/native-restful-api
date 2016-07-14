@@ -54,6 +54,7 @@ paths:
       tags:
           - user
           - authentication
+          - working
       summary: Request access token from a username and password
       operationId: Jwt_Auth_Public::generate_token
       schemes:
@@ -96,6 +97,7 @@ paths:
           - user
           - authentication
           - authenticated
+          - working
       summary: Validates a access token
       operationId: Jwt_Auth_Public::validate_token
       parameters:
@@ -130,6 +132,7 @@ paths:
           - user
           - public
           - concerning
+          - working
       summary: Create a new user.
       operationId: WP_REST_Users_Controller::create_item
       schemes:
@@ -165,6 +168,8 @@ paths:
       tags:
         - user
         - authenticated
+        - working
+        - fake
       summary: Get additional details about the current user
       schemes:
         - https
@@ -192,6 +197,8 @@ paths:
       tags:
         - user
         - authenticated
+        - working
+        - fake
       summary: Save additional details about the current user
       schemes:
         - https
@@ -227,6 +234,8 @@ paths:
       tags:
         - user
         - authenticated
+        - working
+        - fake
       summary: Returns array of `Followable` objects which is either a `Detail` object or `Vendor` object.
       schemes:
         - https
@@ -250,6 +259,8 @@ paths:
       tags:
         - user
         - authenticated
+        - working
+        - fake
       summary: Follow a `Followable` object with user matching authorization parameter.
       schemes:
         - https
@@ -287,6 +298,8 @@ paths:
       tags:
         - user
         - authenticated
+        - working
+        - fake
       summary: Unfollow a `Followable` object with user matching authorization parameter.
       schemes:
         - https
@@ -326,6 +339,8 @@ paths:
       tags:
           - user
           - authenticated
+          - working
+          - fake
       schemes:
         - https
       summary: Get an array of `Followable` objects that are recommended to the user matching the authorization patameter.
@@ -521,6 +536,8 @@ paths:
       tags:
         - image
         - public
+        - working
+        - complete
       schemes:
         - http
         - https
