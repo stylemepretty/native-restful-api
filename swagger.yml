@@ -541,7 +541,7 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/galleries:
+  /api/v2/gallery:
     get:
       tags:
         - gallery

@@ -35,7 +35,7 @@
   } ],
   "produces" : [ "application/json" ],
   "paths" : {
-    "/api/v2/galleries" : {
+    "/api/v2/gallery" : {
       "get" : {
         "tags" : [ "gallery", "public", "working", "fake" ],
         "summary" : "Get galleries in descending order for user matching authorization header or search for galleries by providing one or both detail and vendor query paramters",
