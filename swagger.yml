@@ -556,6 +556,8 @@ paths:
       tags:
           - user
           - authenticated
+          - working
+          - fake
       schemes:
         - https
       summary: Get objects matching taxonomy favorited by user matching authorization header
