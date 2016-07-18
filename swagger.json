@@ -70,6 +70,12 @@
             "schema" : {
               "$ref" : "#/definitions/inline_response_200"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       }
@@ -94,6 +100,12 @@
           },
           "404" : {
             "description" : "Gallery not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
@@ -124,6 +136,12 @@
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       }
@@ -139,6 +157,12 @@
             "description" : "Successful response",
             "schema" : {
               "$ref" : "#/definitions/inline_response_200_3"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
             }
           }
         }
@@ -190,6 +214,12 @@
             "schema" : {
               "$ref" : "#/definitions/inline_response_200_4"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       }
@@ -223,30 +253,6 @@
             "description" : "User not found",
             "schema" : {
               "$ref" : "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "post" : {
-        "tags" : [ "user", "public" ],
-        "summary" : "Create user",
-        "schemes" : [ "https" ],
-        "parameters" : [ {
-          "name" : "email",
-          "in" : "formData",
-          "required" : true,
-          "type" : "string"
-        }, {
-          "name" : "password",
-          "in" : "formData",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "201" : {
-            "description" : "Successful response",
-            "schema" : {
-              "$ref" : "#/definitions/UserPreview"
             }
           },
           "500" : {
@@ -297,39 +303,6 @@
         }
       }
     },
-    "/api/v2/user/auth" : {
-      "post" : {
-        "tags" : [ "user", "working" ],
-        "summary" : "Get access token",
-        "schemes" : [ "https" ],
-        "consumes" : [ "application/x-www-form-urlencoded" ],
-        "parameters" : [ {
-          "name" : "email",
-          "in" : "formData",
-          "required" : true,
-          "type" : "string"
-        }, {
-          "name" : "password",
-          "in" : "formData",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful response",
-            "schema" : {
-              "$ref" : "#/definitions/UserPreview"
-            }
-          },
-          "403" : {
-            "description" : "Failed login",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/api/v2/user/favorite" : {
       "get" : {
         "tags" : [ "user", "authenticated", "working", "fake" ],
@@ -351,6 +324,12 @@
           },
           "403" : {
             "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
@@ -390,6 +369,12 @@
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       },
@@ -426,6 +411,12 @@
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       }
@@ -451,6 +442,17 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "perPage",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "before",
+          "in" : "query",
+          "description" : "Filter favorites to before a timestamp",
+          "required" : false,
+          "type" : "integer"
         } ],
         "responses" : {
           "200" : {
@@ -464,6 +466,12 @@
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       }
@@ -471,7 +479,7 @@
     "/api/v2/user/follow" : {
       "get" : {
         "tags" : [ "user", "authenticated", "working", "fake" ],
-        "summary" : "Get all objects beign followed for user matching authorization header",
+        "summary" : "Get all objects beign followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
           "name" : "HTTP_AUTHORIZATION",
@@ -489,6 +497,12 @@
           },
           "403" : {
             "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
@@ -604,6 +618,12 @@
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
           }
         }
       }
@@ -629,6 +649,17 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "perPage",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "before",
+          "in" : "query",
+          "description" : "Filter follows to before a timestamp",
+          "required" : false,
+          "type" : "integer"
         } ],
         "responses" : {
           "200" : {
@@ -642,30 +673,9 @@
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
-          }
-        }
-      }
-    },
-    "/api/v2/user/token/validate" : {
-      "post" : {
-        "tags" : [ "user", "authenticated" ],
-        "summary" : "Get status of authorization token header",
-        "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
-          "in" : "header",
-          "description" : "Bearer <Access Token>",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful response",
-            "schema" : {
-              "$ref" : "#/definitions/inline_response_200_10"
-            }
           },
-          "403" : {
-            "description" : "Unauthorized response",
+          "500" : {
+            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
@@ -688,11 +698,109 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_11"
+              "$ref" : "#/definitions/inline_response_200_10"
             }
           },
           "404" : {
             "description" : "Vendor not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/wp/auth" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Get access token",
+        "schemes" : [ "https" ],
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/UserPreview"
+            }
+          },
+          "403" : {
+            "description" : "Failed login",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/wp/token/validate" : {
+      "post" : {
+        "tags" : [ "user", "authenticated" ],
+        "summary" : "Get status of authorization token header",
+        "parameters" : [ {
+          "name" : "HTTP_AUTHORIZATION",
+          "in" : "header",
+          "description" : "Bearer <Access Token>",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_11"
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/wp/user" : {
+      "post" : {
+        "tags" : [ "user", "public" ],
+        "summary" : "Create user",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/UserPreview"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
@@ -872,8 +980,13 @@
       }, {
         "type" : "object",
         "properties" : {
-          "post_url" : {
-            "type" : "string"
+          "post" : {
+            "type" : "object",
+            "properties" : {
+              "url" : {
+                "type" : "string"
+              }
+            }
           },
           "details" : {
             "type" : "array",
@@ -997,14 +1110,30 @@
         }
       }
     },
-    "inline_response_200_7" : {
+    "inline_response_200_7_data" : {
       "properties" : {
-        "data" : {
+        "total" : {
+          "type" : "integer"
+        },
+        "perPage" : {
+          "type" : "integer"
+        },
+        "last" : {
+          "type" : "integer"
+        },
+        "results" : {
           "type" : "array",
           "items" : {
             "type" : "object",
             "properties" : { }
           }
+        }
+      }
+    },
+    "inline_response_200_7" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_7_data"
         }
       }
     },
@@ -1025,28 +1154,28 @@
         }
       }
     },
-    "inline_response_200_10_data" : {
+    "inline_response_200_10" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/Vendor"
+        }
+      }
+    },
+    "inline_response_200_11_data" : {
       "properties" : {
         "status" : {
           "type" : "integer"
         }
       }
     },
-    "inline_response_200_10" : {
+    "inline_response_200_11" : {
       "properties" : {
         "code" : {
           "type" : "string",
           "description" : "jwt_auth_valid_token"
         },
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_10_data"
-        }
-      }
-    },
-    "inline_response_200_11" : {
-      "properties" : {
-        "data" : {
-          "$ref" : "#/definitions/Vendor"
+          "$ref" : "#/definitions/inline_response_200_11_data"
         }
       }
     }

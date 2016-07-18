@@ -70,6 +70,10 @@ paths:
           description: User not found
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
     put:
       tags:
         - user
@@ -108,6 +112,7 @@ paths:
           description: Failed response
           schema:
              $ref: '#/definitions/Error'
+  /api/wp/user:
     post:
       tags:
           - user
@@ -136,11 +141,10 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/user/auth:
+  /api/wp/auth:
     post:
       tags:
           - user
-          - working
       summary: Get access token
       schemes:
         - https
@@ -167,7 +171,7 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/user/token/validate:
+  /api/wp/token/validate:
     post:
       tags:
           - user
@@ -206,7 +210,7 @@ paths:
         - authenticated
         - working
         - fake
-      summary: Get all objects beign followed for user matching authorization header
+      summary: Get all objects beign followed by user matching authorization header
       schemes:
         - https
       parameters:
@@ -228,6 +232,10 @@ paths:
                   $ref: '#/definitions/Followable'
         403:
           description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
     post:
@@ -344,6 +352,17 @@ paths:
           in: query
           required: false
           type: string
+        -
+          name: perPage
+          in: query
+          required: false
+          type: integer
+        -
+          name: before
+          in: query
+          description: Filter follows to before a timestamp
+          required: false
+          type: integer
       responses:
         200:
           description: Successful response
@@ -351,11 +370,24 @@ paths:
             type: object
             properties:
               data:
-                type: array
-                items:
-                  type: object
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  last:
+                    type: integer
+                  perPage:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
         403:
           description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
 
@@ -388,6 +420,10 @@ paths:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
   /api/v2/user/favorite:
     get:
@@ -418,6 +454,10 @@ paths:
                   $ref: '#/definitions/Favoriteable'
         403:
           description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
     post:
@@ -460,6 +500,10 @@ paths:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
     delete:
       tags:
         - user
@@ -500,6 +544,10 @@ paths:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
   /api/v2/user/favorite/{taxonomy}:
     get:
@@ -526,6 +574,17 @@ paths:
           in: query
           required: false
           type: string
+        -
+          name: perPage
+          in: query
+          required: false
+          type: integer
+        -
+          name: before
+          in: query
+          description: Filter favorites to before a timestamp
+          required: false
+          type: integer
       responses:
         200:
           description: Successful response
@@ -533,11 +592,24 @@ paths:
             type: object
             properties:
               data:
-                type: array
-                items:
-                  type: object
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  last:
+                    type: integer
+                  perPage:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
         403:
           description: Unauthorized response
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
 
@@ -595,6 +667,10 @@ paths:
                     type: array
                     items:
                       $ref: '#/definitions/GalleryPreview'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
   /api/v2/gallery/{id}:
     get:
@@ -623,6 +699,10 @@ paths:
                 $ref: '#/definitions/Gallery'
         404:
           description: Gallery not found
+          schema:
+             $ref: '#/definitions/Error'
+        500:
+          description: Failed response
           schema:
              $ref: '#/definitions/Error'
 
@@ -656,6 +736,10 @@ paths:
           description: Image not found
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
   /api/v2/vendor/{id}:
     get:
@@ -684,6 +768,10 @@ paths:
           description: Vendor not found
           schema:
              $ref: '#/definitions/Error'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
   /api/v2/search/top:
     get:
@@ -704,6 +792,10 @@ paths:
                 type: array
                 items:
                   type: string
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
   /api/v2/search/{taxonomy}:
     get:
@@ -771,6 +863,10 @@ paths:
                     type: array
                     items:
                       type: object
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
 
 definitions:
   Error:
@@ -908,8 +1004,11 @@ definitions:
       - $ref: '#/definitions/GalleryPreview'
       - type: object
         properties:
-          post_url:
-            type: string
+          post:
+            type: object
+            properties:
+              url:
+                type: string
           details:
             type: array
             items:
