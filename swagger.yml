@@ -750,6 +750,8 @@ paths:
       tags:
         - vendor
         - public
+        - working
+        - fake
       schemes:
         - http
         - https
@@ -782,6 +784,8 @@ paths:
       tags:
         - search
         - public
+        - working
+        - fake
       schemes:
         - http
         - https
@@ -806,6 +810,8 @@ paths:
       tags:
         - search
         - public
+        - working
+        - fake
       schemes:
         - http
         - https

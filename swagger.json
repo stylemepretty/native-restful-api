@@ -148,7 +148,7 @@
     },
     "/api/v2/search/top" : {
       "get" : {
-        "tags" : [ "search", "public" ],
+        "tags" : [ "search", "public", "working", "fake" ],
         "summary" : "Get most popular queries",
         "schemes" : [ "http", "https" ],
         "parameters" : [ ],
@@ -170,7 +170,7 @@
     },
     "/api/v2/search/{taxonomy}" : {
       "get" : {
-        "tags" : [ "search", "public" ],
+        "tags" : [ "search", "public", "working", "fake" ],
         "summary" : "Search objects in descending order matching one or both query or lat and long query paramters",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -423,7 +423,7 @@
     },
     "/api/v2/user/favorite/{taxonomy}" : {
       "get" : {
-        "tags" : [ "user", "authenticated" ],
+        "tags" : [ "user", "authenticated", "working", "fake" ],
         "summary" : "Get objects matching taxonomy favorited by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -685,7 +685,7 @@
     },
     "/api/v2/vendor/{id}" : {
       "get" : {
-        "tags" : [ "vendor", "public" ],
+        "tags" : [ "vendor", "public", "working", "fake" ],
         "summary" : "Get a single vendor",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
