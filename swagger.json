@@ -630,7 +630,7 @@
     },
     "/api/v2/user/follow/{taxonomy}" : {
       "get" : {
-        "tags" : [ "user", "authenticated" ],
+        "tags" : [ "user", "authenticated", "working", "fake" ],
         "summary" : "Get objects matching taxonomy followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -665,7 +665,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_7"
+              "$ref" : "#/definitions/inline_response_200_10"
             }
           },
           "403" : {
@@ -698,7 +698,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_10"
+              "$ref" : "#/definitions/inline_response_200_11"
             }
           },
           "404" : {
@@ -764,7 +764,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_11"
+              "$ref" : "#/definitions/inline_response_200_12"
             }
           },
           "403" : {
@@ -1154,28 +1154,55 @@
         }
       }
     },
+    "inline_response_200_10_data" : {
+      "properties" : {
+        "total" : {
+          "type" : "integer"
+        },
+        "perPage" : {
+          "type" : "integer"
+        },
+        "before" : {
+          "type" : "integer"
+        },
+        "results" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : { }
+          }
+        }
+      }
+    },
     "inline_response_200_10" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_10_data"
+        }
+      }
+    },
+    "inline_response_200_11" : {
       "properties" : {
         "data" : {
           "$ref" : "#/definitions/Vendor"
         }
       }
     },
-    "inline_response_200_11_data" : {
+    "inline_response_200_12_data" : {
       "properties" : {
         "status" : {
           "type" : "integer"
         }
       }
     },
-    "inline_response_200_11" : {
+    "inline_response_200_12" : {
       "properties" : {
         "code" : {
           "type" : "string",
           "description" : "jwt_auth_valid_token"
         },
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_11_data"
+          "$ref" : "#/definitions/inline_response_200_12_data"
         }
       }
     }

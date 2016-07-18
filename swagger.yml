@@ -332,6 +332,8 @@ paths:
       tags:
           - user
           - authenticated
+          - working
+          - fake
       schemes:
         - https
       summary: Get objects matching taxonomy followed by user matching authorization header
@@ -374,7 +376,7 @@ paths:
                 properties:
                   total:
                     type: integer
-                  last:
+                  before:
                     type: integer
                   perPage:
                     type: integer
