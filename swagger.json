@@ -230,7 +230,7 @@
         "summary" : "Get details about user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -269,7 +269,7 @@
         "schemes" : [ "https" ],
         "consumes" : [ "application/json" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -309,7 +309,7 @@
         "summary" : "Get favorites for user matching authorization token",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -341,7 +341,7 @@
         "summary" : "Favorite an object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -383,7 +383,7 @@
         "summary" : "Unfavorite object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -427,7 +427,7 @@
         "summary" : "Get objects matching taxonomy favorited by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -482,7 +482,7 @@
         "summary" : "Get all objects beign followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
           "required" : true,
@@ -514,7 +514,7 @@
         "summary" : "Follow a object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -556,7 +556,7 @@
         "summary" : "Unfollow object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -600,7 +600,7 @@
         "summary" : "Get recommended objects for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -634,7 +634,7 @@
         "summary" : "Get objects matching taxonomy followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -737,11 +737,11 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/UserPreview"
+              "$ref" : "#/definitions/inline_response_200_12"
             }
           },
           "403" : {
-            "description" : "Failed login",
+            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }
@@ -754,7 +754,7 @@
         "tags" : [ "user", "authenticated" ],
         "summary" : "Get status of authorization token header",
         "parameters" : [ {
-          "name" : "HTTP_AUTHORIZATION",
+          "name" : "Authorization",
           "in" : "header",
           "description" : "Bearer <Access Token>",
           "required" : true,
@@ -764,7 +764,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_12"
+              "$ref" : "#/definitions/inline_response_200_13"
             }
           },
           "403" : {
@@ -826,9 +826,6 @@
       "properties" : {
         "id" : {
           "type" : "integer"
-        },
-        "username" : {
-          "type" : "string"
         },
         "email" : {
           "type" : "string"
@@ -1188,21 +1185,34 @@
         }
       }
     },
-    "inline_response_200_12_data" : {
+    "inline_response_200_12" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "token" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_13_data" : {
       "properties" : {
         "status" : {
           "type" : "integer"
         }
       }
     },
-    "inline_response_200_12" : {
+    "inline_response_200_13" : {
       "properties" : {
         "code" : {
           "type" : "string",
           "description" : "jwt_auth_valid_token"
         },
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_12_data"
+          "$ref" : "#/definitions/inline_response_200_13_data"
         }
       }
     }
