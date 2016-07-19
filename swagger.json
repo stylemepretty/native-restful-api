@@ -716,9 +716,41 @@
         }
       }
     },
-    "/api/wp/auth" : {
+    "/api/wp/user" : {
       "post" : {
-        "tags" : [ "user" ],
+        "tags" : [ "user", "public" ],
+        "summary" : "Create user",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/UserPreview"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/wp-json/auth/token" : {
+      "post" : {
+        "tags" : [ "user", "working", "complete" ],
         "summary" : "Get access token",
         "schemes" : [ "https" ],
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -749,9 +781,9 @@
         }
       }
     },
-    "/api/wp/token/validate" : {
+    "/wp-json/auth/token/validate" : {
       "post" : {
-        "tags" : [ "user", "authenticated" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get status of authorization token header",
         "parameters" : [ {
           "name" : "Authorization",
@@ -769,38 +801,6 @@
           },
           "403" : {
             "description" : "Unauthorized response",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/api/wp/user" : {
-      "post" : {
-        "tags" : [ "user", "public" ],
-        "summary" : "Create user",
-        "schemes" : [ "https" ],
-        "parameters" : [ {
-          "name" : "email",
-          "in" : "formData",
-          "required" : true,
-          "type" : "string"
-        }, {
-          "name" : "password",
-          "in" : "formData",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "201" : {
-            "description" : "Successful response",
-            "schema" : {
-              "$ref" : "#/definitions/UserPreview"
-            }
-          },
-          "500" : {
-            "description" : "Failed response",
             "schema" : {
               "$ref" : "#/definitions/Error"
             }

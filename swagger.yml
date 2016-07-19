@@ -141,10 +141,12 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/wp/auth:
+  /wp-json/auth/token:
     post:
       tags:
           - user
+          - working
+          - complete
       summary: Get access token
       schemes:
         - https
@@ -178,11 +180,13 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/wp/token/validate:
+  /wp-json/auth/token/validate:
     post:
       tags:
           - user
           - authenticated
+          - working
+          - complete
       summary: Get status of authorization token header
       parameters:
         -
