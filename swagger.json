@@ -46,9 +46,8 @@
           "required" : false,
           "type" : "integer"
         }, {
-          "name" : "last",
+          "name" : "page",
           "in" : "query",
-          "description" : "Filter galleries with an ID less than",
           "required" : false,
           "type" : "integer"
         }, {
@@ -202,9 +201,8 @@
           "required" : false,
           "type" : "integer"
         }, {
-          "name" : "last",
+          "name" : "page",
           "in" : "query",
-          "description" : "Filter objects with an ID less than",
           "required" : false,
           "type" : "integer"
         } ],
@@ -448,9 +446,8 @@
           "required" : false,
           "type" : "integer"
         }, {
-          "name" : "before",
+          "name" : "page",
           "in" : "query",
-          "description" : "Filter favorites to before a timestamp",
           "required" : false,
           "type" : "integer"
         } ],
@@ -655,9 +652,8 @@
           "required" : false,
           "type" : "integer"
         }, {
-          "name" : "before",
+          "name" : "page",
           "in" : "query",
-          "description" : "Filter follows to before a timestamp",
           "required" : false,
           "type" : "integer"
         } ],
@@ -665,7 +661,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_10"
+              "$ref" : "#/definitions/inline_response_200_7"
             }
           },
           "403" : {
@@ -698,7 +694,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_11"
+              "$ref" : "#/definitions/inline_response_200_10"
             }
           },
           "404" : {
@@ -737,7 +733,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_12"
+              "$ref" : "#/definitions/inline_response_200_11"
             }
           },
           "403" : {
@@ -764,7 +760,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_13"
+              "$ref" : "#/definitions/inline_response_200_12"
             }
           },
           "403" : {
@@ -968,6 +964,15 @@
         },
         "thumb" : {
           "type" : "string"
+        },
+        "thumbs" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "images" : {
+          "type" : "integer"
         }
       }
     },
@@ -1022,7 +1027,7 @@
         "perPage" : {
           "type" : "integer"
         },
-        "last" : {
+        "page" : {
           "type" : "integer"
         },
         "results" : {
@@ -1070,9 +1075,8 @@
           "type" : "integer",
           "description" : "Integer matching perPage request parameter or default value"
         },
-        "last" : {
-          "type" : "integer",
-          "description" : "The `Gallery` object ID matching request parameter or null"
+        "page" : {
+          "type" : "integer"
         },
         "results" : {
           "type" : "array",
@@ -1115,7 +1119,7 @@
         "perPage" : {
           "type" : "integer"
         },
-        "last" : {
+        "page" : {
           "type" : "integer"
         },
         "results" : {
@@ -1151,41 +1155,14 @@
         }
       }
     },
-    "inline_response_200_10_data" : {
-      "properties" : {
-        "total" : {
-          "type" : "integer"
-        },
-        "perPage" : {
-          "type" : "integer"
-        },
-        "before" : {
-          "type" : "integer"
-        },
-        "results" : {
-          "type" : "array",
-          "items" : {
-            "type" : "object",
-            "properties" : { }
-          }
-        }
-      }
-    },
     "inline_response_200_10" : {
-      "properties" : {
-        "data" : {
-          "$ref" : "#/definitions/inline_response_200_10_data"
-        }
-      }
-    },
-    "inline_response_200_11" : {
       "properties" : {
         "data" : {
           "$ref" : "#/definitions/Vendor"
         }
       }
     },
-    "inline_response_200_12" : {
+    "inline_response_200_11" : {
       "properties" : {
         "id" : {
           "type" : "integer"
@@ -1198,21 +1175,21 @@
         }
       }
     },
-    "inline_response_200_13_data" : {
+    "inline_response_200_12_data" : {
       "properties" : {
         "status" : {
           "type" : "integer"
         }
       }
     },
-    "inline_response_200_13" : {
+    "inline_response_200_12" : {
       "properties" : {
         "code" : {
           "type" : "string",
           "description" : "jwt_auth_valid_token on success"
         },
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_13_data"
+          "$ref" : "#/definitions/inline_response_200_12_data"
         }
       }
     }

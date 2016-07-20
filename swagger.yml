@@ -373,9 +373,8 @@ paths:
           required: false
           type: integer
         -
-          name: before
+          name: page
           in: query
-          description: Filter follows to before a timestamp
           required: false
           type: integer
       responses:
@@ -389,7 +388,7 @@ paths:
                 properties:
                   total:
                     type: integer
-                  before:
+                  page:
                     type: integer
                   perPage:
                     type: integer
@@ -597,9 +596,8 @@ paths:
           required: false
           type: integer
         -
-          name: before
+          name: page
           in: query
-          description: Filter favorites to before a timestamp
           required: false
           type: integer
       responses:
@@ -613,7 +611,7 @@ paths:
                 properties:
                   total:
                     type: integer
-                  last:
+                  page:
                     type: integer
                   perPage:
                     type: integer
@@ -648,9 +646,8 @@ paths:
           required: false
           type: integer
         -
-          name: last
+          name: page
           in: query
-          description: Filter galleries with an ID less than
           required: false
           type: integer
         -
@@ -676,7 +673,7 @@ paths:
                 properties:
                   total:
                     type: integer
-                  last:
+                  page:
                     type: integer
                   perPage:
                     type: integer
@@ -862,9 +859,8 @@ paths:
           required: false
           type: integer
         -
-          name: last
+          name: page
           in: query
-          description: Filter objects with an ID less than
           required: false
           type: integer
       responses:
@@ -876,9 +872,8 @@ paths:
               data:
                 type: object
                 properties:
-                  last:
+                  page:
                     type: integer
-                    description: The `Gallery` object ID matching request parameter or null
                   perPage:
                     type: integer
                     description: Integer matching perPage request parameter or default value
@@ -1019,6 +1014,12 @@ definitions:
         type: string
       thumb:
         type: string
+      thumbs:
+        type: array
+        items:
+          type: string
+      images:
+        type: integer
 
   Gallery:
     allOf:
