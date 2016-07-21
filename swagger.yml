@@ -222,7 +222,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       summary: Get all objects beign followed by user matching authorization header
       schemes:
         - https
@@ -256,7 +256,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       summary: Follow a object for user matching authorization header
       schemes:
         - https
@@ -300,7 +300,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       summary: Unfollow object for user matching authorization header
       schemes:
         - https
@@ -445,7 +445,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       schemes:
         - https
       summary: Get favorites for user matching authorization token
@@ -479,7 +479,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       schemes:
         - https
       summary: Favorite an object for user matching authorization header
@@ -523,7 +523,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       schemes:
         - https
       summary: Unfavorite object for user matching authorization header
@@ -1040,8 +1040,6 @@ definitions:
     type: object
     discriminator: taxonomy
     properties:
-      name:
-        type: string
       id:
         type: integer
       taxonomy:
@@ -1056,15 +1054,12 @@ definitions:
           - gallery
     required:
       - id
-      - name
       - taxonomy
 
   Favoriteable:
     type: object
     discriminator: taxonomy
     properties:
-      name:
-        type: string
       id:
         type: integer
       taxonomy:
@@ -1080,6 +1075,8 @@ definitions:
       - $ref: '#/definitions/Followable'
       - type: object
         properties:
+          name:
+            type: string
           type:
             type: string
           is_lbb:
@@ -1171,3 +1168,6 @@ definitions:
     allOf:
       - $ref: '#/definitions/Followable'
       - type: object
+        properties:
+            name:
+              type: string

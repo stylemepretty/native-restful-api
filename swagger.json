@@ -293,7 +293,7 @@
     },
     "/api/v2/user/favorite" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get favorites for user matching authorization token",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -325,7 +325,7 @@
         }
       },
       "post" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Favorite an object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -367,7 +367,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Unfavorite object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -503,7 +503,7 @@
     },
     "/api/v2/user/follow" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get all objects beign followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -535,7 +535,7 @@
         }
       },
       "post" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Follow a object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -577,7 +577,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Unfollow object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -873,12 +873,9 @@
     },
     "Followable" : {
       "type" : "object",
-      "required" : [ "id", "name", "taxonomy" ],
+      "required" : [ "id", "taxonomy" ],
       "discriminator" : "taxonomy",
       "properties" : {
-        "name" : {
-          "type" : "string"
-        },
         "id" : {
           "type" : "integer"
         },
@@ -893,9 +890,6 @@
       "required" : [ "id", "taxonomy" ],
       "discriminator" : "taxonomy",
       "properties" : {
-        "name" : {
-          "type" : "string"
-        },
         "id" : {
           "type" : "integer"
         },
@@ -911,6 +905,9 @@
       }, {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string"
+          },
           "type" : {
             "type" : "string"
           },
@@ -1043,7 +1040,12 @@
       "allOf" : [ {
         "$ref" : "#/definitions/Followable"
       }, {
-        "type" : "object"
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          }
+        }
       } ],
       "description" : "Gallery level tag"
     },
