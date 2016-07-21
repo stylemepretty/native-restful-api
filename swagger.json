@@ -145,40 +145,12 @@
         }
       }
     },
-    "/api/v2/search/top" : {
+    "/api/v2/search/ios" : {
       "get" : {
-        "tags" : [ "search", "public", "working", "fake" ],
-        "summary" : "Get most popular queries",
-        "schemes" : [ "http", "https" ],
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful response",
-            "schema" : {
-              "$ref" : "#/definitions/inline_response_200_3"
-            }
-          },
-          "500" : {
-            "description" : "Failed response",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/search/{taxonomy}" : {
-      "get" : {
-        "tags" : [ "search", "public", "working", "fake" ],
-        "summary" : "Search objects in descending order matching one or both query or lat and long query paramters",
+        "tags" : [ "search", "public" ],
+        "summary" : "Search vendors, galleries and images",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
-          "name" : "taxonomy",
-          "in" : "path",
-          "required" : true,
-          "type" : "string",
-          "enum" : [ "vendor", "image", "gallery" ]
-        }, {
           "name" : "query",
           "in" : "query",
           "required" : false,
@@ -196,16 +168,34 @@
           "required" : false,
           "type" : "integer"
         }, {
-          "name" : "perPage",
+          "name" : "maxItems",
           "in" : "query",
-          "required" : false,
-          "type" : "integer"
-        }, {
-          "name" : "page",
-          "in" : "query",
+          "description" : "Number of results to return per index",
           "required" : false,
           "type" : "integer"
         } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/search/top" : {
+      "get" : {
+        "tags" : [ "search", "public", "working", "fake" ],
+        "summary" : "Get most popular queries",
+        "schemes" : [ "http", "https" ],
+        "parameters" : [ ],
         "responses" : {
           "200" : {
             "description" : "Successful response",
@@ -1059,38 +1049,128 @@
         }
       }
     },
-    "inline_response_200_3" : {
+    "inline_response_200_3_data_name" : {
       "properties" : {
-        "data" : {
+        "matched" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_3_data_vendors" : {
+      "properties" : {
+        "name" : {
+          "$ref" : "#/definitions/inline_response_200_3_data_name"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_3_data_images" : {
+      "properties" : {
+        "thumb" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "vendors" : {
           "type" : "array",
           "items" : {
-            "type" : "string"
+            "$ref" : "#/definitions/inline_response_200_3_data_vendors"
+          }
+        },
+        "tags" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_3_data_name"
           }
         }
       }
     },
-    "inline_response_200_4_data" : {
+    "inline_response_200_3_data_galleries" : {
       "properties" : {
-        "perPage" : {
-          "type" : "integer",
-          "description" : "Integer matching perPage request parameter or default value"
+        "thumb" : {
+          "type" : "string"
         },
-        "page" : {
-          "type" : "integer"
-        },
-        "results" : {
+        "details" : {
           "type" : "array",
           "items" : {
-            "type" : "object",
-            "properties" : { }
+            "$ref" : "#/definitions/inline_response_200_3_data_name"
           }
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "title" : {
+          "$ref" : "#/definitions/inline_response_200_3_data_name"
+        },
+        "vendors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_3_data_vendors"
+          }
+        }
+      }
+    },
+    "inline_response_200_3_data_vendors_1" : {
+      "properties" : {
+        "thumb" : {
+          "type" : "string"
+        },
+        "name" : {
+          "$ref" : "#/definitions/inline_response_200_3_data_name"
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "type" : {
+          "$ref" : "#/definitions/inline_response_200_3_data_name"
+        }
+      }
+    },
+    "inline_response_200_3_data" : {
+      "properties" : {
+        "maxItems" : {
+          "type" : "integer"
+        },
+        "images" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_3_data_images"
+          }
+        },
+        "galleries" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_3_data_galleries"
+          }
+        },
+        "vendors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_3_data_vendors_1"
+          }
+        }
+      }
+    },
+    "inline_response_200_3" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_3_data"
         }
       }
     },
     "inline_response_200_4" : {
       "properties" : {
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_4_data"
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
         }
       }
     },

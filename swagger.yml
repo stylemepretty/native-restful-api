@@ -815,27 +815,16 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
-  /api/v2/search/{taxonomy}:
+  /api/v2/search/ios:
     get:
       tags:
         - search
         - public
-        - working
-        - fake
       schemes:
         - http
         - https
-      summary: Search objects in descending order matching one or both query or lat and long query paramters
+      summary: Search vendors, galleries and images
       parameters:
-        -
-          name: taxonomy
-          in: path
-          required: true
-          type: string
-          enum:
-          - vendor
-          - image
-          - gallery
         -
           name: query
           in: query
@@ -854,13 +843,9 @@ paths:
           required: false
           type: integer
         -
-          name: perPage
+          name: maxItems
           in: query
-          required: false
-          type: integer
-        -
-          name: page
-          in: query
+          description: Number of results to return per index
           required: false
           type: integer
       responses:
@@ -872,15 +857,102 @@ paths:
               data:
                 type: object
                 properties:
-                  page:
+                  maxItems:
                     type: integer
-                  perPage:
-                    type: integer
-                    description: Integer matching perPage request parameter or default value
-                  results:
+                  vendors:
                     type: array
                     items:
                       type: object
+                      properties:
+                        name:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            matched:
+                              type: string
+                        type:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            matched:
+                              type: string
+                        thumb:
+                          type: string
+                        id:
+                          type: integer
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        thumb:
+                          type: string
+                        tags:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              value:
+                                type: string
+                              matched:
+                                type: string
+                        vendors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: object
+                                properties:
+                                  value:
+                                    type: string
+                                  matched:
+                                    type: string
+                  galleries:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        thumb:
+                          type: string
+                        title:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            matched:
+                              type: string
+                        vendors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: object
+                                properties:
+                                  value:
+                                    type: string
+                                  matched:
+                                    type: string
+                        details:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              value:
+                                type: string
+                              matched:
+                                type: string
         500:
           description: Failed response
           schema:
