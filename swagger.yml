@@ -43,7 +43,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       summary: Get details about user matching authorization header
       schemes:
         - https
@@ -79,7 +79,7 @@ paths:
         - user
         - authenticated
         - working
-        - fake
+        - complete
       summary: Save details about user matching authorization header
       schemes:
         - https
@@ -628,6 +628,56 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
+  /api/v2/user/feed/gallery:
+    get:
+      tags:
+        - gallery
+        - authenticated
+      schemes:
+        - https
+        - http
+      summary: Get galleries relevant to user matching authorization header
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Bearer <Access Token>
+          required: true
+          type: string
+        -
+          name: perPage
+          in: query
+          required: false
+          type: integer
+        -
+          name: page
+          in: query
+          required: false
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  perPage:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/definitions/GalleryPreview'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
   /api/v2/gallery:
     get:
       tags:
@@ -638,7 +688,7 @@ paths:
       schemes:
         - https
         - http
-      summary: Get galleries in descending order for user matching authorization header or search for galleries by providing one or both detail and vendor query paramters
+      summary: Search galleries by providing detail and/or vendor query paramters
       parameters:
         -
           name: perPage

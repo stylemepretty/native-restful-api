@@ -38,7 +38,7 @@
     "/api/v2/gallery" : {
       "get" : {
         "tags" : [ "gallery", "public", "working", "fake" ],
-        "summary" : "Get galleries in descending order for user matching authorization header or search for galleries by providing one or both detail and vendor query paramters",
+        "summary" : "Search galleries by providing detail and/or vendor query paramters",
         "schemes" : [ "https", "http" ],
         "parameters" : [ {
           "name" : "perPage",
@@ -214,7 +214,7 @@
     },
     "/api/v2/user" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get details about user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -252,7 +252,7 @@
         }
       },
       "put" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Save details about user matching authorization header",
         "schemes" : [ "https" ],
         "consumes" : [ "application/json" ],
@@ -452,6 +452,44 @@
             "description" : "Unauthorized response",
             "schema" : {
               "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/user/feed/gallery" : {
+      "get" : {
+        "tags" : [ "gallery", "authenticated" ],
+        "summary" : "Get galleries relevant to user matching authorization header",
+        "schemes" : [ "https", "http" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer <Access Token>",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "perPage",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
             }
           },
           "500" : {
