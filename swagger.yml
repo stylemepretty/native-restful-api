@@ -684,7 +684,7 @@ paths:
         - gallery
         - public
         - working
-        - fake
+        - complete
       schemes:
         - https
         - http
@@ -742,7 +742,7 @@ paths:
         - gallery
         - public
         - working
-        - fake
+        - complete
       schemes:
         - http
         - https
@@ -761,10 +761,6 @@ paths:
             properties:
               data:
                 $ref: '#/definitions/Gallery'
-        404:
-          description: Gallery not found
-          schema:
-             $ref: '#/definitions/Error'
         500:
           description: Failed response
           schema:
@@ -811,7 +807,7 @@ paths:
         - vendor
         - public
         - working
-        - fake
+        - complete
       schemes:
         - http
         - https

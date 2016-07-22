@@ -37,7 +37,7 @@
   "paths" : {
     "/api/v2/gallery" : {
       "get" : {
-        "tags" : [ "gallery", "public", "working", "fake" ],
+        "tags" : [ "gallery", "public", "working", "complete" ],
         "summary" : "Search galleries by providing detail and/or vendor query paramters",
         "schemes" : [ "https", "http" ],
         "parameters" : [ {
@@ -81,7 +81,7 @@
     },
     "/api/v2/gallery/{id}" : {
       "get" : {
-        "tags" : [ "gallery", "public", "working", "fake" ],
+        "tags" : [ "gallery", "public", "working", "complete" ],
         "summary" : "Get a single gallery",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -95,12 +95,6 @@
             "description" : "Successful response",
             "schema" : {
               "$ref" : "#/definitions/inline_response_200_1"
-            }
-          },
-          "404" : {
-            "description" : "Gallery not found",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
             }
           },
           "500" : {
@@ -709,7 +703,7 @@
     },
     "/api/v2/vendor/{id}" : {
       "get" : {
-        "tags" : [ "vendor", "public", "working", "fake" ],
+        "tags" : [ "vendor", "public", "working", "complete" ],
         "summary" : "Get a single vendor",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
