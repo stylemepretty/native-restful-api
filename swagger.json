@@ -405,7 +405,7 @@
     },
     "/api/v2/user/favorite/{taxonomy}" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get objects matching taxonomy favorited by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -649,7 +649,7 @@
     },
     "/api/v2/user/follow/{taxonomy}" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get objects matching taxonomy followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {

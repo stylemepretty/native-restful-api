@@ -346,7 +346,7 @@ paths:
           - user
           - authenticated
           - working
-          - fake
+          - complete
       schemes:
         - https
       summary: Get objects matching taxonomy followed by user matching authorization header
@@ -569,7 +569,7 @@ paths:
           - user
           - authenticated
           - working
-          - fake
+          - complete
       schemes:
         - https
       summary: Get objects matching taxonomy favorited by user matching authorization header
