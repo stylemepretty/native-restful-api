@@ -7,7 +7,7 @@
       "email" : "adam@stylemepretty.com"
     }
   },
-  "host" : "10.98.192.9",
+  "host" : "www.stylemepretty.com",
   "tags" : [ {
     "name" : "gallery"
   }, {
@@ -141,7 +141,7 @@
     },
     "/api/v2/search/ios" : {
       "get" : {
-        "tags" : [ "search", "public" ],
+        "tags" : [ "search", "public", "working", "complete" ],
         "summary" : "Search vendors, galleries and images",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -162,7 +162,7 @@
           "required" : false,
           "type" : "integer"
         }, {
-          "name" : "maxItems",
+          "name" : "items",
           "in" : "query",
           "description" : "Number of results to return per index",
           "required" : false,
@@ -1083,22 +1083,12 @@
         }
       }
     },
-    "inline_response_200_3_data_name" : {
+    "inline_response_200_3_data_gallery" : {
       "properties" : {
-        "matched" : {
-          "type" : "string"
+        "id" : {
+          "type" : "integer"
         },
-        "value" : {
-          "type" : "string"
-        }
-      }
-    },
-    "inline_response_200_3_data_vendors" : {
-      "properties" : {
-        "name" : {
-          "$ref" : "#/definitions/inline_response_200_3_data_name"
-        },
-        "type" : {
+        "title" : {
           "type" : "string"
         }
       }
@@ -1111,17 +1101,21 @@
         "id" : {
           "type" : "integer"
         },
-        "vendors" : {
+        "gallery" : {
+          "$ref" : "#/definitions/inline_response_200_3_data_gallery"
+        }
+      }
+    },
+    "inline_response_200_3_data_title" : {
+      "properties" : {
+        "matched" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_3_data_vendors"
+            "type" : "string"
           }
         },
-        "tags" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/inline_response_200_3_data_name"
-          }
+        "value" : {
+          "type" : "string"
         }
       }
     },
@@ -1130,52 +1124,40 @@
         "thumb" : {
           "type" : "string"
         },
-        "details" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/inline_response_200_3_data_name"
-          }
-        },
         "id" : {
           "type" : "integer"
         },
         "title" : {
-          "$ref" : "#/definitions/inline_response_200_3_data_name"
-        },
-        "vendors" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/inline_response_200_3_data_vendors"
-          }
+          "$ref" : "#/definitions/inline_response_200_3_data_title"
         }
       }
     },
-    "inline_response_200_3_data_vendors_1" : {
+    "inline_response_200_3_data_vendors" : {
       "properties" : {
         "thumb" : {
           "type" : "string"
         },
         "name" : {
-          "$ref" : "#/definitions/inline_response_200_3_data_name"
+          "$ref" : "#/definitions/inline_response_200_3_data_title"
         },
         "id" : {
           "type" : "integer"
-        },
-        "type" : {
-          "$ref" : "#/definitions/inline_response_200_3_data_name"
         }
       }
     },
     "inline_response_200_3_data" : {
       "properties" : {
-        "maxItems" : {
-          "type" : "integer"
-        },
         "images" : {
           "type" : "array",
           "items" : {
             "$ref" : "#/definitions/inline_response_200_3_data_images"
           }
+        },
+        "lng" : {
+          "type" : "integer"
+        },
+        "query" : {
+          "type" : "string"
         },
         "galleries" : {
           "type" : "array",
@@ -1183,11 +1165,17 @@
             "$ref" : "#/definitions/inline_response_200_3_data_galleries"
           }
         },
+        "items" : {
+          "type" : "integer"
+        },
         "vendors" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_3_data_vendors_1"
+            "$ref" : "#/definitions/inline_response_200_3_data_vendors"
           }
+        },
+        "lat" : {
+          "type" : "integer"
         }
       }
     },

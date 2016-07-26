@@ -6,7 +6,7 @@ info:
   contact:
       email: "adam@stylemepretty.com"
 
-host: 10.98.192.9
+host: www.stylemepretty.com
 produces:
   - application/json
 
@@ -866,6 +866,8 @@ paths:
       tags:
         - search
         - public
+        - working
+        - complete
       schemes:
         - http
         - https
@@ -889,7 +891,7 @@ paths:
           required: false
           type: integer
         -
-          name: maxItems
+          name: items
           in: query
           description: Number of results to return per index
           required: false
@@ -903,31 +905,32 @@ paths:
               data:
                 type: object
                 properties:
-                  maxItems:
+                  query:
+                    type: string
+                  lat:
+                    type: integer
+                  lng:
+                    type: integer
+                  items:
                     type: integer
                   vendors:
                     type: array
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
+                        thumb:
+                          type: string
                         name:
                           type: object
                           properties:
                             value:
                               type: string
                             matched:
-                              type: string
-                        type:
-                          type: object
-                          properties:
-                            value:
-                              type: string
-                            matched:
-                              type: string
-                        thumb:
-                          type: string
-                        id:
-                          type: integer
+                              type: array
+                              items:
+                                type: string
                   images:
                     type: array
                     items:
@@ -937,29 +940,14 @@ paths:
                           type: integer
                         thumb:
                           type: string
-                        tags:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              value:
-                                type: string
-                              matched:
-                                type: string
-                        vendors:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              type:
-                                type: string
-                              name:
-                                type: object
-                                properties:
-                                  value:
-                                    type: string
-                                  matched:
-                                    type: string
+                        gallery:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            title:
+                              type: string
+
                   galleries:
                     type: array
                     items:
@@ -975,29 +963,8 @@ paths:
                             value:
                               type: string
                             matched:
-                              type: string
-                        vendors:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              type:
-                                type: string
-                              name:
-                                type: object
-                                properties:
-                                  value:
-                                    type: string
-                                  matched:
-                                    type: string
-                        details:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              value:
-                                type: string
-                              matched:
+                              type: array
+                              items:
                                 type: string
         500:
           description: Failed response
