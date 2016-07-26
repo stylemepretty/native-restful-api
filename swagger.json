@@ -186,7 +186,7 @@
     },
     "/api/v2/search/top" : {
       "get" : {
-        "tags" : [ "search", "public", "working", "fake" ],
+        "tags" : [ "search", "public", "working", "complete" ],
         "summary" : "Get most popular queries",
         "schemes" : [ "http", "https" ],
         "parameters" : [ ],
@@ -459,7 +459,7 @@
     },
     "/api/v2/user/feed/gallery" : {
       "get" : {
-        "tags" : [ "gallery", "authenticated" ],
+        "tags" : [ "gallery", "authenticated", "working", "complete" ],
         "summary" : "Get galleries relevant to user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -615,7 +615,7 @@
     },
     "/api/v2/user/follow/recommended" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "fake" ],
+        "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get recommended objects for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -1251,10 +1251,29 @@
         }
       }
     },
+    "inline_response_200_9_data" : {
+      "properties" : {
+        "thumb" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "taxonomy" : {
+          "type" : "string"
+        }
+      }
+    },
     "inline_response_200_9" : {
       "properties" : {
         "data" : {
-          "$ref" : "#/definitions/Followable"
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_9_data"
+          }
         }
       }
     },

@@ -413,7 +413,7 @@ paths:
           - user
           - authenticated
           - working
-          - fake
+          - complete
       schemes:
         - https
       summary: Get recommended objects for user matching authorization header
@@ -431,7 +431,18 @@ paths:
             type: object
             properties:
               data:
-                $ref: '#/definitions/Followable'
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    thumb:
+                      type: string
+                    taxonomy:
+                      type: string
         403:
           description: Unauthorized response
           schema:
@@ -635,6 +646,8 @@ paths:
       tags:
         - gallery
         - authenticated
+        - working
+        - complete
       schemes:
         - https
       summary: Get galleries relevant to user matching authorization header
@@ -842,7 +855,7 @@ paths:
         - search
         - public
         - working
-        - fake
+        - complete
       schemes:
         - http
         - https
