@@ -6,7 +6,7 @@ info:
   contact:
       email: "adam@stylemepretty.com"
 
-host: www.stylemepretty.com
+host: 10.98.192.9
 produces:
   - application/json
 
@@ -190,6 +190,8 @@ paths:
           - working
           - complete
       summary: Get status of authorization token header
+      schemes:
+        - https
       parameters:
         -
           name: Authorization
@@ -635,7 +637,6 @@ paths:
         - authenticated
       schemes:
         - https
-        - http
       summary: Get galleries relevant to user matching authorization header
       parameters:
         -

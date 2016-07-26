@@ -7,7 +7,7 @@
       "email" : "adam@stylemepretty.com"
     }
   },
-  "host" : "www.stylemepretty.com",
+  "host" : "10.98.192.9",
   "tags" : [ {
     "name" : "gallery"
   }, {
@@ -461,7 +461,7 @@
       "get" : {
         "tags" : [ "gallery", "authenticated" ],
         "summary" : "Get galleries relevant to user matching authorization header",
-        "schemes" : [ "https", "http" ],
+        "schemes" : [ "https" ],
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
@@ -771,6 +771,7 @@
       "post" : {
         "tags" : [ "user", "authenticated", "working", "complete" ],
         "summary" : "Get status of authorization token header",
+        "schemes" : [ "https" ],
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
