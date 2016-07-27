@@ -134,10 +134,13 @@ paths:
           required: true
           type: string
       responses:
-        201:
+        200:
           description: Successful response
           schema:
-             $ref: '#/definitions/UserPreview'
+            type: object
+            properties:
+              data:
+               $ref: '#/definitions/UserPreview'
         500:
           description: Failed response
           schema:
@@ -149,7 +152,7 @@ paths:
           - user
           - working
           - complete
-      summary: Get access token
+      summary: Get access token from a email / password
       schemes:
         - https
       consumes:
@@ -171,13 +174,53 @@ paths:
           schema:
             type: object
             properties:
-              id:
-                type: integer
-              email:
-                type: string
-              token:
-                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  token:
+                    type: string
         403:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
+  /wp-json/v2/auth/facebook/token:
+    post:
+      tags:
+          - user
+          - working
+          - complete
+      summary: Get access token from facebook token
+      schemes:
+        - https
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        -
+          name: token
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  token:
+                    type: string
+        500:
           description: Failed response
           schema:
              $ref: '#/definitions/Error'
@@ -205,14 +248,11 @@ paths:
           schema:
              type: object
              properties:
-              code:
-                type: string
-                description: jwt_auth_valid_token on success
               data:
                 type: object
                 properties:
-                  status:
-                    type: integer
+                  valid:
+                    type: boolean
         403:
           description: Unauthorized response
           schema:

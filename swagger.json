@@ -734,10 +734,38 @@
         }
       }
     },
+    "/wp-json/v2/auth/facebook/token" : {
+      "post" : {
+        "tags" : [ "user", "working", "complete" ],
+        "summary" : "Get access token from facebook token",
+        "schemes" : [ "https" ],
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_11"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/wp-json/v2/auth/token" : {
       "post" : {
         "tags" : [ "user", "working", "complete" ],
-        "summary" : "Get access token",
+        "summary" : "Get access token from a email / password",
         "schemes" : [ "https" ],
         "consumes" : [ "application/x-www-form-urlencoded" ],
         "parameters" : [ {
@@ -812,10 +840,10 @@
           "type" : "string"
         } ],
         "responses" : {
-          "201" : {
+          "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/UserPreview"
+              "$ref" : "#/definitions/inline_response_200_13"
             }
           },
           "500" : {
@@ -1284,7 +1312,7 @@
         }
       }
     },
-    "inline_response_200_11" : {
+    "inline_response_200_11_data" : {
       "properties" : {
         "id" : {
           "type" : "integer"
@@ -1297,21 +1325,31 @@
         }
       }
     },
+    "inline_response_200_11" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_11_data"
+        }
+      }
+    },
     "inline_response_200_12_data" : {
       "properties" : {
-        "status" : {
-          "type" : "integer"
+        "valid" : {
+          "type" : "boolean"
         }
       }
     },
     "inline_response_200_12" : {
       "properties" : {
-        "code" : {
-          "type" : "string",
-          "description" : "jwt_auth_valid_token on success"
-        },
         "data" : {
           "$ref" : "#/definitions/inline_response_200_12_data"
+        }
+      }
+    },
+    "inline_response_200_13" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/UserPreview"
         }
       }
     }
