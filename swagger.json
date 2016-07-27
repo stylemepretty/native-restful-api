@@ -854,6 +854,33 @@
           }
         }
       }
+    },
+    "/wp-json/v2/user/forgot-password" : {
+      "post" : {
+        "tags" : [ "user", "public", "working", "complete" ],
+        "summary" : "Send password recover email",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_14"
+            }
+          },
+          "500" : {
+            "description" : "Failed response",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions" : {
@@ -1350,6 +1377,20 @@
       "properties" : {
         "data" : {
           "$ref" : "#/definitions/UserPreview"
+        }
+      }
+    },
+    "inline_response_200_14_data" : {
+      "properties" : {
+        "sent" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "inline_response_200_14" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_14_data"
         }
       }
     }

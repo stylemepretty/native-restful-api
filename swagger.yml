@@ -112,6 +112,37 @@ paths:
           description: Failed response
           schema:
              $ref: '#/definitions/Error'
+  /wp-json/v2/user/forgot-password:
+    post:
+      tags:
+        - user
+        - public
+        - working
+        - complete
+      summary: Send password recover email
+      schemes:
+        - https
+      parameters:
+        -
+          name: email
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              data:
+               type: object
+               properties:
+                sent:
+                  type: boolean
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
   /wp-json/v2/user:
     post:
       tags:
