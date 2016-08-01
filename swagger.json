@@ -37,9 +37,9 @@
   "paths" : {
     "/api/v2/gallery" : {
       "get" : {
-        "tags" : [ "gallery", "public", "working", "complete" ],
+        "tags" : [ "gallery" ],
         "summary" : "Search galleries by providing detail and/or vendor query paramters",
-        "schemes" : [ "https", "http" ],
+        "schemes" : [ "http", "https" ],
         "parameters" : [ {
           "name" : "perPage",
           "in" : "query",
@@ -81,7 +81,7 @@
     },
     "/api/v2/gallery/{id}" : {
       "get" : {
-        "tags" : [ "gallery", "public", "working", "complete" ],
+        "tags" : [ "gallery" ],
         "summary" : "Get a single gallery",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -108,7 +108,7 @@
     },
     "/api/v2/image/{id}" : {
       "get" : {
-        "tags" : [ "image", "public", "working", "complete" ],
+        "tags" : [ "image" ],
         "summary" : "Get a single image",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -141,7 +141,7 @@
     },
     "/api/v2/search/ios" : {
       "get" : {
-        "tags" : [ "search", "public", "working", "complete" ],
+        "tags" : [ "search" ],
         "summary" : "Search vendors, galleries and images",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -186,7 +186,7 @@
     },
     "/api/v2/search/top" : {
       "get" : {
-        "tags" : [ "search", "public", "working", "complete" ],
+        "tags" : [ "search" ],
         "summary" : "Get most popular queries",
         "schemes" : [ "http", "https" ],
         "parameters" : [ ],
@@ -208,7 +208,7 @@
     },
     "/api/v2/user" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get details about user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -231,12 +231,6 @@
               "$ref" : "#/definitions/Error"
             }
           },
-          "404" : {
-            "description" : "User not found",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
-            }
-          },
           "500" : {
             "description" : "Failed response",
             "schema" : {
@@ -246,7 +240,7 @@
         }
       },
       "put" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Save details about user matching authorization header",
         "schemes" : [ "https" ],
         "consumes" : [ "application/json" ],
@@ -270,12 +264,6 @@
               "$ref" : "#/definitions/Error"
             }
           },
-          "404" : {
-            "description" : "User not found",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
-            }
-          },
           "500" : {
             "description" : "Failed response",
             "schema" : {
@@ -287,7 +275,7 @@
     },
     "/api/v2/user/favorite" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get favorites for user matching authorization token",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -319,7 +307,7 @@
         }
       },
       "post" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Favorite an object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -361,7 +349,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Unfavorite object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -405,7 +393,7 @@
     },
     "/api/v2/user/favorite/{taxonomy}" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get objects matching taxonomy favorited by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -459,7 +447,7 @@
     },
     "/api/v2/user/feed/gallery" : {
       "get" : {
-        "tags" : [ "gallery", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get galleries relevant to user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -468,6 +456,12 @@
           "description" : "Bearer <Access Token>",
           "required" : true,
           "type" : "string"
+        }, {
+          "name" : "since",
+          "in" : "query",
+          "description" : "Epoch time string of last api call, used to fetch total new items",
+          "required" : false,
+          "type" : "integer"
         }, {
           "name" : "perPage",
           "in" : "query",
@@ -483,7 +477,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200"
+              "$ref" : "#/definitions/inline_response_200_8"
             }
           },
           "500" : {
@@ -497,13 +491,13 @@
     },
     "/api/v2/user/follow" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get all objects beign followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
-          "description" : "Value must be formatted like so \"Bearer <Access Token>\"",
+          "description" : "Bearer <Access Token>",
           "required" : true,
           "type" : "string"
         } ],
@@ -511,7 +505,7 @@
           "200" : {
             "description" : "Succesfull response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_8"
+              "$ref" : "#/definitions/inline_response_200_9"
             }
           },
           "403" : {
@@ -529,7 +523,7 @@
         }
       },
       "post" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Follow a object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -553,7 +547,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_8"
+              "$ref" : "#/definitions/inline_response_200_9"
             }
           },
           "403" : {
@@ -571,7 +565,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Unfollow object for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -595,7 +589,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_8"
+              "$ref" : "#/definitions/inline_response_200_9"
             }
           },
           "403" : {
@@ -615,7 +609,7 @@
     },
     "/api/v2/user/follow/recommended" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get recommended objects for user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -629,7 +623,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_9"
+              "$ref" : "#/definitions/inline_response_200_10"
             }
           },
           "403" : {
@@ -649,7 +643,7 @@
     },
     "/api/v2/user/follow/{taxonomy}" : {
       "get" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get objects matching taxonomy followed by user matching authorization header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -703,7 +697,7 @@
     },
     "/api/v2/vendor/{id}" : {
       "get" : {
-        "tags" : [ "vendor", "public", "working", "complete" ],
+        "tags" : [ "vendor" ],
         "summary" : "Get a single vendor",
         "schemes" : [ "http", "https" ],
         "parameters" : [ {
@@ -716,7 +710,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_10"
+              "$ref" : "#/definitions/inline_response_200_11"
             }
           },
           "404" : {
@@ -736,7 +730,7 @@
     },
     "/wp-json/v2/auth/facebook/token" : {
       "post" : {
-        "tags" : [ "user", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get access token from facebook token",
         "schemes" : [ "https" ],
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -750,7 +744,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_11"
+              "$ref" : "#/definitions/inline_response_200_12"
             }
           },
           "500" : {
@@ -764,7 +758,7 @@
     },
     "/wp-json/v2/auth/token" : {
       "post" : {
-        "tags" : [ "user", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get access token from a email / password",
         "schemes" : [ "https" ],
         "consumes" : [ "application/x-www-form-urlencoded" ],
@@ -783,7 +777,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_11"
+              "$ref" : "#/definitions/inline_response_200_12"
             }
           },
           "403" : {
@@ -797,7 +791,7 @@
     },
     "/wp-json/v2/auth/token/validate" : {
       "post" : {
-        "tags" : [ "user", "authenticated", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Get status of authorization token header",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -811,7 +805,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_12"
+              "$ref" : "#/definitions/inline_response_200_13"
             }
           },
           "403" : {
@@ -825,7 +819,7 @@
     },
     "/wp-json/v2/user" : {
       "post" : {
-        "tags" : [ "user", "public", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Create user",
         "schemes" : [ "https" ],
         "parameters" : [ {
@@ -843,7 +837,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_13"
+              "$ref" : "#/definitions/inline_response_200_14"
             }
           },
           "500" : {
@@ -857,9 +851,9 @@
     },
     "/wp-json/v2/user/forgot-password" : {
       "post" : {
-        "tags" : [ "user", "public", "working", "complete" ],
+        "tags" : [ "user" ],
         "summary" : "Send password recover email",
-        "schemes" : [ "https" ],
+        "schemes" : [ "http", "https" ],
         "parameters" : [ {
           "name" : "email",
           "in" : "formData",
@@ -870,7 +864,7 @@
           "200" : {
             "description" : "Successful response",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_14"
+              "$ref" : "#/definitions/inline_response_200_15"
             }
           },
           "500" : {
@@ -912,10 +906,16 @@
       }, {
         "type" : "object",
         "properties" : {
+          "avatar" : {
+            "type" : "string"
+          },
           "wedding_date" : {
             "type" : "string"
           },
           "full_name" : {
+            "type" : "string"
+          },
+          "fb_token" : {
             "type" : "string"
           }
         }
@@ -1296,7 +1296,36 @@
         }
       }
     },
+    "inline_response_200_8_data" : {
+      "properties" : {
+        "new" : {
+          "type" : "integer"
+        },
+        "total" : {
+          "type" : "integer"
+        },
+        "perPage" : {
+          "type" : "integer"
+        },
+        "page" : {
+          "type" : "integer"
+        },
+        "results" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/GalleryPreview"
+          }
+        }
+      }
+    },
     "inline_response_200_8" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_8_data"
+        }
+      }
+    },
+    "inline_response_200_9" : {
       "properties" : {
         "data" : {
           "type" : "array",
@@ -1306,7 +1335,7 @@
         }
       }
     },
-    "inline_response_200_9_data" : {
+    "inline_response_200_10_data" : {
       "properties" : {
         "thumb" : {
           "type" : "string"
@@ -1322,24 +1351,24 @@
         }
       }
     },
-    "inline_response_200_9" : {
+    "inline_response_200_10" : {
       "properties" : {
         "data" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_9_data"
+            "$ref" : "#/definitions/inline_response_200_10_data"
           }
         }
       }
     },
-    "inline_response_200_10" : {
+    "inline_response_200_11" : {
       "properties" : {
         "data" : {
           "$ref" : "#/definitions/Vendor"
         }
       }
     },
-    "inline_response_200_11_data" : {
+    "inline_response_200_12_data" : {
       "properties" : {
         "id" : {
           "type" : "integer"
@@ -1352,20 +1381,6 @@
         }
       }
     },
-    "inline_response_200_11" : {
-      "properties" : {
-        "data" : {
-          "$ref" : "#/definitions/inline_response_200_11_data"
-        }
-      }
-    },
-    "inline_response_200_12_data" : {
-      "properties" : {
-        "valid" : {
-          "type" : "boolean"
-        }
-      }
-    },
     "inline_response_200_12" : {
       "properties" : {
         "data" : {
@@ -1373,24 +1388,38 @@
         }
       }
     },
-    "inline_response_200_13" : {
+    "inline_response_200_13_data" : {
       "properties" : {
-        "data" : {
-          "$ref" : "#/definitions/UserPreview"
+        "valid" : {
+          "type" : "boolean"
         }
       }
     },
-    "inline_response_200_14_data" : {
+    "inline_response_200_13" : {
       "properties" : {
-        "sent" : {
-          "type" : "boolean"
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_13_data"
         }
       }
     },
     "inline_response_200_14" : {
       "properties" : {
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_14_data"
+          "$ref" : "#/definitions/UserPreview"
+        }
+      }
+    },
+    "inline_response_200_15_data" : {
+      "properties" : {
+        "sent" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "inline_response_200_15" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_15_data"
         }
       }
     }
