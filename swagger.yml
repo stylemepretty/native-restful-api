@@ -41,9 +41,6 @@ paths:
     get:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       summary: Get details about user matching authorization header
       schemes:
         - https
@@ -66,10 +63,6 @@ paths:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
-        404:
-          description: User not found
-          schema:
-             $ref: '#/definitions/Error'
         500:
           description: Failed response
           schema:
@@ -77,9 +70,6 @@ paths:
     put:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       summary: Save details about user matching authorization header
       schemes:
         - https
@@ -104,10 +94,6 @@ paths:
           description: Unauthorized response
           schema:
              $ref: '#/definitions/Error'
-        404:
-          description: User not found
-          schema:
-             $ref: '#/definitions/Error'
         500:
           description: Failed response
           schema:
@@ -116,11 +102,9 @@ paths:
     post:
       tags:
         - user
-        - public
-        - working
-        - complete
       summary: Send password recover email
       schemes:
+        - http
         - https
       parameters:
         -
@@ -147,9 +131,6 @@ paths:
     post:
       tags:
         - user
-        - public
-        - working
-        - complete
       summary: Create user
       schemes:
         - https
@@ -181,8 +162,6 @@ paths:
     post:
       tags:
           - user
-          - working
-          - complete
       summary: Get access token from a email / password
       schemes:
         - https
@@ -223,8 +202,6 @@ paths:
     post:
       tags:
           - user
-          - working
-          - complete
       summary: Get access token from facebook token
       schemes:
         - https
@@ -260,9 +237,6 @@ paths:
     post:
       tags:
           - user
-          - authenticated
-          - working
-          - complete
       summary: Get status of authorization token header
       schemes:
         - https
@@ -293,9 +267,6 @@ paths:
     get:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       summary: Get all objects beign followed by user matching authorization header
       schemes:
         - https
@@ -303,7 +274,7 @@ paths:
         -
           name: Authorization
           in: header
-          description: Value must be formatted like so "Bearer <Access Token>"
+          description: Bearer <Access Token>
           required: true
           type: string
       responses:
@@ -327,9 +298,6 @@ paths:
     post:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       summary: Follow a object for user matching authorization header
       schemes:
         - https
@@ -371,9 +339,6 @@ paths:
     delete:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       summary: Unfollow object for user matching authorization header
       schemes:
         - https
@@ -417,9 +382,6 @@ paths:
     get:
       tags:
           - user
-          - authenticated
-          - working
-          - complete
       schemes:
         - https
       summary: Get objects matching taxonomy followed by user matching authorization header
@@ -482,9 +444,6 @@ paths:
     get:
       tags:
           - user
-          - authenticated
-          - working
-          - complete
       schemes:
         - https
       summary: Get recommended objects for user matching authorization header
@@ -527,9 +486,6 @@ paths:
     get:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       schemes:
         - https
       summary: Get favorites for user matching authorization token
@@ -561,9 +517,6 @@ paths:
     post:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       schemes:
         - https
       summary: Favorite an object for user matching authorization header
@@ -605,9 +558,6 @@ paths:
     delete:
       tags:
         - user
-        - authenticated
-        - working
-        - complete
       schemes:
         - https
       summary: Unfavorite object for user matching authorization header
@@ -651,9 +601,6 @@ paths:
     get:
       tags:
           - user
-          - authenticated
-          - working
-          - complete
       schemes:
         - https
       summary: Get objects matching taxonomy favorited by user matching authorization header
@@ -715,10 +662,7 @@ paths:
   /api/v2/user/feed/gallery:
     get:
       tags:
-        - gallery
-        - authenticated
-        - working
-        - complete
+        - user
       schemes:
         - https
       summary: Get galleries relevant to user matching authorization header
@@ -729,6 +673,12 @@ paths:
           description: Bearer <Access Token>
           required: true
           type: string
+        -
+          name: since
+          description: Epoch time string of last api call, used to fetch total new items
+          in: query
+          required: false
+          type: integer
         -
           name: perPage
           in: query
@@ -750,6 +700,8 @@ paths:
                 properties:
                   total:
                     type: integer
+                  new:
+                    type: integer
                   page:
                     type: integer
                   perPage:
@@ -767,12 +719,9 @@ paths:
     get:
       tags:
         - gallery
-        - public
-        - working
-        - complete
       schemes:
-        - https
         - http
+        - https
       summary: Search galleries by providing detail and/or vendor query paramters
       parameters:
         -
@@ -825,9 +774,6 @@ paths:
     get:
       tags:
         - gallery
-        - public
-        - working
-        - complete
       schemes:
         - http
         - https
@@ -855,9 +801,6 @@ paths:
     get:
       tags:
         - image
-        - public
-        - working
-        - complete
       schemes:
         - http
         - https
@@ -890,9 +833,6 @@ paths:
     get:
       tags:
         - vendor
-        - public
-        - working
-        - complete
       schemes:
         - http
         - https
@@ -924,9 +864,6 @@ paths:
     get:
       tags:
         - search
-        - public
-        - working
-        - complete
       schemes:
         - http
         - https
@@ -950,9 +887,6 @@ paths:
     get:
       tags:
         - search
-        - public
-        - working
-        - complete
       schemes:
         - http
         - https
@@ -1079,9 +1013,13 @@ definitions:
       - $ref: '#/definitions/UserPreview'
       - type: object
         properties:
+          avatar:
+            type: string
           wedding_date:
             type: string
           full_name:
+            type: string
+          fb_token:
             type: string
 
   Followable:
