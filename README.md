@@ -2,6 +2,10 @@
 
 [View API](http://editor.swagger.io/#/?import=https://raw.githubusercontent.com/stylemepretty/native-restful-api/master/swagger.yml)
 
+### Using API
+
+A Postman colleciton can be found [here](https://www.getpostman.com/collections/a784b861758377c3c630)
+
 ### Editing API
 
 - Clone this repository
