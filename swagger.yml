@@ -6,7 +6,7 @@ info:
   contact:
       email: "adam@stylemepretty.com"
 
-host: 10.98.192.9
+host: www.stylemepretty.com
 produces:
   - application/json
 
@@ -21,20 +21,6 @@ tags:
       name: vendor
     -
       name: search
-    -
-      name: public
-    -
-      name: authenticated
-      description: Requires authorization header
-    -
-      name: working
-      description: Meets documented spec
-    -
-      name: complete
-      description: Dev complete
-    -
-      name: fake
-      description: Contains fake data
 
 paths:
   /api/v2/user:
