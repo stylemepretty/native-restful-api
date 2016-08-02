@@ -1,24 +1,24 @@
 {
   "name": "native-restful-api",
   "version": "1.0.0",
-  "description": "",
-  "directories": {
-    "test": "tests"
+  "description": "Style Me Pretty API spec & API tests",
+  "dependencies": {
+    "chakram": "^1.4.0",
+    "lodash": "^4.14.1",
+    "mocha": "^3.0.0"
   },
+  "devDependencies": {},
   "scripts": {
-    "build": "swagger-codegen generate -i swagger.yml -l swagger",
-    "test": "phpunit --bootstrap tests/bootstrap.php tests/api/*"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stylemepretty/native-restful-api.git"
   },
-  "author": "adamjv90@gmail.com",
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/stylemepretty/native-restful-api/issues"
   },
-  "homepage": "https://github.com/stylemepretty/native-restful-api#readme",
-  "dependencies": {
-    "dredd": "^1.5.0"
-  }
+  "homepage": "https://github.com/stylemepretty/native-restful-api#readme"
 }
