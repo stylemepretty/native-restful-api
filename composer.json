@@ -1,6 +1,0 @@
-{
-    "require": {
-        "fr3d/swagger-assertions": "^0.6.0",
-        "guzzlehttp/guzzle": "^5.3.0"
-    }
-}
