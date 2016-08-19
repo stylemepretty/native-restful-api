@@ -994,6 +994,44 @@ paths:
           schema:
              $ref: '#/definitions/Error'
 
+  /api/v2/location/search/google:
+    get:
+      tags:
+        - search
+      schemes:
+        - http
+        - https
+      summary: Search vendors, galleries and images
+      parameters:
+        -
+          name: query
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    place_id:
+                      type: string
+                    name:
+                      type: string
+                    matched:
+                      type: array
+                      items:
+                        type: string
+                    lat:
+                      type: number
+                    lng:
+                      type: number
+
 definitions:
   Error:
     type: object
