@@ -53,7 +53,7 @@ paths:
           description: Failed response
           schema:
              $ref: '#/definitions/Error'
-    put:
+    post:
       tags:
         - user
       summary: Save details about user matching authorization header
@@ -68,6 +68,32 @@ paths:
           description: Bearer <Access Token>
           required: true
           type: string
+        -
+          name: wedding_date
+          in: formData
+          required: false
+          type: string
+        -
+          name: avatar
+          in: formData
+          required: false
+          type: file
+        -
+          name: full_name
+          in: formData
+          required: false
+          type: string
+        -
+          name: current_password
+          description: Must be supplied only when updating password
+          in: formData
+          required: false
+          type: string
+        -
+          name: new_password
+          in: formData
+          required: false
+          type: string
       responses:
         200:
           description: Successful response
@@ -75,7 +101,7 @@ paths:
             type: object
             properties:
               data:
-                $ref: '#/definitions/User'
+                type: object
         403:
           description: Unauthorized response
           schema:
@@ -169,14 +195,10 @@ paths:
           description: Successful response
           schema:
             type: object
-            properties:
-              data:
-                type: object
+            allOf:
+              - $ref: '#/definitions/User'
+              - type: object
                 properties:
-                  id:
-                    type: integer
-                  email:
-                    type: string
                   token:
                     type: string
         403:
@@ -204,14 +226,10 @@ paths:
           description: Successful response
           schema:
             type: object
-            properties:
-              data:
-                type: object
+            allOf:
+              - $ref: '#/definitions/User'
+              - type: object
                 properties:
-                  id:
-                    type: integer
-                  email:
-                    type: string
                   token:
                     type: string
         500:
