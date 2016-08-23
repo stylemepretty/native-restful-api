@@ -84,6 +84,11 @@ paths:
           required: false
           type: string
         -
+          name: email
+          in: formData
+          required: false
+          type: string
+        -
           name: current_password
           description: Must be supplied only when updating password
           in: formData
