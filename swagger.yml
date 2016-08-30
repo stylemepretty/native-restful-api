@@ -169,7 +169,7 @@ paths:
             type: object
             properties:
               data:
-               $ref: '#/definitions/UserPreview'
+               $ref: '#/definitions/User'
         500:
           description: Failed response
           schema:
@@ -470,18 +470,60 @@ paths:
             type: object
             properties:
               data:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    thumb:
-                      type: string
-                    taxonomy:
-                      type: string
+                type: object
+                properties:
+                  season:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        thumb:
+                          type: string
+                        taxonomy:
+                          type: string
+                  setting:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        thumb:
+                          type: string
+                        taxonomy:
+                          type: string
+                  style:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        thumb:
+                          type: string
+                        taxonomy:
+                          type: string
+                  vendor:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        thumb:
+                          type: string
+                        taxonomy:
+                          type: string
         403:
           description: Unauthorized response
           schema:
@@ -684,7 +726,7 @@ paths:
           type: string
         -
           name: since
-          description: Epoch time string of last api call, used to fetch total new items
+          description: Number on new items since parmater value
           in: query
           required: false
           type: integer
@@ -694,10 +736,11 @@ paths:
           required: false
           type: integer
         -
-          name: page
+          name: cursor
+          description: Fetch results from value of paramter
           in: query
           required: false
-          type: integer
+          type: string
       responses:
         200:
           description: Successful response
@@ -707,18 +750,51 @@ paths:
               data:
                 type: object
                 properties:
-                  total:
-                    type: integer
                   new:
                     type: integer
-                  page:
-                    type: integer
-                  perPage:
-                    type: integer
+                  cursor:
+                    type: string
+                    description: Blank when theres no more results
                   results:
                     type: array
                     items:
                       $ref: '#/definitions/GalleryPreview'
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+    post:
+      tags:
+        - user
+      schemes:
+        - https
+      summary: Build a feed of galleries for user matching authorization header
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Bearer <Access Token>
+          required: true
+          type: string
+        -
+          name: follow
+          in: query
+          description: Value format [taxonomy],[id]
+          required: true
+          type: array
+          items:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  status:
+                    type: string
         500:
           description: Failed response
           schema:
@@ -734,19 +810,26 @@ paths:
       summary: Search galleries by providing detail and/or vendor query paramters
       parameters:
         -
+          name: since
+          description: Number on new items since parmater value
+          in: query
+          required: false
+          type: integer
+        -
           name: perPage
           in: query
           required: false
           type: integer
         -
-          name: page
+          name: cursor
+          description: Fetch results from value of paramter
           in: query
           required: false
-          type: integer
+          type: string
         -
           name: vendor
           in: query
-          description: Filter galleries credited by a `Vendor`
+          description: Filter galleries credited by `Vendor`
           required: false
           type: integer
         -
@@ -764,12 +847,11 @@ paths:
               data:
                 type: object
                 properties:
-                  total:
+                  new:
                     type: integer
-                  page:
-                    type: integer
-                  perPage:
-                    type: integer
+                  cursor:
+                    type: string
+                    description: Blank when theres no more results
                   results:
                     type: array
                     items:
@@ -1046,28 +1128,26 @@ definitions:
       message:
         type: string
 
-  UserPreview:
+  User:
     type: object
     properties:
       id:
         type: integer
       email:
         type: string
-
-  User:
-    type: object
-    allOf:
-      - $ref: '#/definitions/UserPreview'
-      - type: object
-        properties:
-          avatar:
-            type: string
-          wedding_date:
-            type: string
-          full_name:
-            type: string
-          fb_token:
-            type: string
+      avatar:
+        type: string
+      wedding_date:
+        type: string
+      full_name:
+        type: string
+      fb_token:
+        type: string
+      follows:
+        type: array
+        description: First 5 user follows. Used for caching.
+        items:
+          $ref: '#/definitions/Followable'
 
   Followable:
     type: object
@@ -1162,6 +1242,9 @@ definitions:
     properties:
       id:
         type: integer
+      created:
+        type: integer
+        description: Created date in epoch time
       title:
         type: string
       thumb:
