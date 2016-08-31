@@ -417,10 +417,17 @@ paths:
           required: false
           type: integer
         -
-          name: page
+          name: since
+          description: Number on new items since parmater value
           in: query
           required: false
           type: integer
+        -
+          name: cursor
+          description: Fetch results from value of paramter
+          in: query
+          required: false
+          type: string
       responses:
         200:
           description: Successful response
@@ -430,12 +437,11 @@ paths:
               data:
                 type: object
                 properties:
-                  total:
+                  new:
                     type: integer
-                  page:
-                    type: integer
-                  perPage:
-                    type: integer
+                  cursor:
+                    type: string
+                    description: Blank when theres no more results
                   results:
                     type: array
                     items:
@@ -678,10 +684,17 @@ paths:
           required: false
           type: integer
         -
-          name: page
+          name: since
+          description: Number on new items since parmater value
           in: query
           required: false
           type: integer
+        -
+          name: cursor
+          description: Fetch results from value of paramter
+          in: query
+          required: false
+          type: string
       responses:
         200:
           description: Successful response
@@ -691,16 +704,15 @@ paths:
               data:
                 type: object
                 properties:
-                  total:
+                  new:
                     type: integer
-                  page:
-                    type: integer
-                  perPage:
-                    type: integer
+                  cursor:
+                    type: string
+                    description: Blank when theres no more results
                   results:
                     type: array
                     items:
-                      type: object
+                      $ref: '#/definitions/Image'
         403:
           description: Unauthorized response
           schema:
