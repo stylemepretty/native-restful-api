@@ -791,10 +791,20 @@ paths:
             type: object
             properties:
               data:
+                type: array
+                items:
+                  $ref: '#/definitions/Followable'
+              feed:
                 type: object
                 properties:
-                  status:
+                  cursor:
                     type: string
+                    description: Blank when theres no more results
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/definitions/GalleryPreview'
+
         500:
           description: Failed response
           schema:
