@@ -469,6 +469,18 @@ paths:
           description: Bearer <Access Token>
           required: true
           type: string
+        -
+          name: lat
+          in: query
+          description: Latitude point
+          required: false
+          type: integer
+        -
+          name: lng
+          in: query
+          description: Longitude point
+          required: false
+          type: integer
       responses:
         200:
           description: Successful response
