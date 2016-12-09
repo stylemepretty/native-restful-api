@@ -23,6 +23,41 @@ tags:
       name: search
 
 paths:
+  /api/v2/obi/event:
+    post:
+      tags:
+        - obi
+      summary: Consume OBI webhooks for subscriptbased payment events
+      schemes:
+        - https
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        -
+          name: method
+          in: formData
+          required: true
+          type: string
+        -
+          name: subscription
+          in: formData
+          required: true
+          description: Accepts subscription data as array
+          type: string
+        -
+          name: payload
+          in: formData
+          required: true
+          description: Accepts any other data endpoints as array
+          type: string
+      responses:
+        200:
+          description: Successful response
+        500:
+          description: Failed response
+          schema:
+             $ref: '#/definitions/Error'
+
   /api/v2/user:
     get:
       tags:
