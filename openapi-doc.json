@@ -7,7 +7,7 @@
   },
   "components": {
     "schemas": {
-      "Lookbook Item": {
+      "LookbookItem": {
         "title": "Lookbook Item",
         "description": "Lookbook Item Schema.",
         "type": "object",
@@ -46,30 +46,30 @@
             }
           },
           "fabric": {
-            "type": "object"
+            "$ref": "#/components/schemas/LookbookTerm"
           },
           "length": {
-            "type": "ibject"
+            "$ref": "#/components/schemas/LookbookTerm"
           },
           "neckline": {
-            "type": "object"
+            "$ref": "#/components/schemas/LookbookTerm"
           },
           "silhouette": {
-            "type": "object"
+            "$ref": "#/components/schemas/LookbookTerm"
           },
           "sleeves": {
-            "type": "object"
+            "$ref": "#/components/schemas/LookbookTerm"
           },
           "type": {
-            "type": "object"
+            "$ref": "#/components/schemas/LookbookTerm"
           },
           "category": {
-            "description": "A category is a high level type for example Wedding Dress, or Jewelry",
-            "type": "object"
+            "$ref": "#/components/schemas/LookbookTerm",
+            "description": "A category is a high level type for example Wedding Dress, or Jewelry"
           }
         }
       },
-      "Lookbook Term": {
+      "LookbookTerm": {
         "title": "Lookbook Term",
         "description": "Terms used to describe Lookbook Items",
         "type": "object",
