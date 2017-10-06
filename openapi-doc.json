@@ -81,6 +81,76 @@
             "type": "string"
           }
         }
+      },
+      "LookbookCollection": {
+        "title": "Lookbook Collection",
+        "description": "Lookbook Collection Schema.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "LookbookDesigner": {
+        "title": "Lookbook Designer",
+        "description": "Lookbook Designer Schema.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "cover": {
+            "description": "Cover photo",
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "retail": {
+            "description": "URL of retailer",
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "facebook": {
+            "type": "string"
+          },
+          "twitter": {
+            "type": "string"
+          },
+          "instagram": {
+            "type": "string"
+          },
+          "pinterest": {
+            "type": "string"
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LookbookCollection"
+            }
+          }
+        }
       }
     }
   }
